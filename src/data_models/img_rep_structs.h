@@ -16,8 +16,8 @@ struct pixel
 struct matrix_picture
 {
     pixel** data;
-    int width;
-    int height;
+    short width;
+    short height;
 };
 
 
@@ -26,8 +26,10 @@ struct matrix_picture
 // and the selection_matrix is a boolean array that represents the relative positions of the selected pixels within the mask area.
 struct mask
 {
-    int corner_coordinates[2];
+    short corner_coordinates[2];
     bool** selection_matrix;
+    short width;
+    short height;
 };
 
 
@@ -37,5 +39,6 @@ struct mask
 struct vector_filter
 {
     short* coefficients;
+    short size;
     short divisor;
 };

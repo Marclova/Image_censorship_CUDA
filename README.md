@@ -31,28 +31,31 @@ Vectors are 1-dimensional because the "separable kernel binomial algorithm is us
 
 Following there are the featured structures:
 
-struct pixel
+pixel
 {
     unsigned char r;
     unsigned char g;
     unsigned char b;   
 };
 
-struct matrix_picture
+matrix_picture
 {
     pixel[][] data;
-    int width;
-    int height;
+    short width;
+    short height;
 };
 
-struct mask
+mask
 {
-    int corner_coordinates[2];
+    short corner_coordinates[2];
     bool[][] selection_matrix;
+    short width;
+    short height;
 };
 
-struct vector_filter
+vector_filter
 {
     short[] coefficients;
+    short size;
     short divisor;
 };
