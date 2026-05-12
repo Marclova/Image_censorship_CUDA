@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel",
+  "command": "C:\\msys64\\mingw64\\bin\\c++.exe -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4 -g -fdiagnostics-color=always -fmodules-ts -fmodule-mapper=CMakeFiles\\Parallel.dir\\main.cpp.obj.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles\\Parallel.dir\\main.cpp.obj -c C:\\Users\\abiga\\OneDrive\\Desktop\\Magistrale\\Parallel\\main.cpp",
+  "file": "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/main.cpp",
+  "output": "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/CMakeFiles/Parallel.dir/main.cpp.obj"
+}
+]
