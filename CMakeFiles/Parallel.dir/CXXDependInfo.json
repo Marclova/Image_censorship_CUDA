@@ -21,10 +21,10 @@
 	"module-dir" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/CMakeFiles/Parallel.dir",
 	"sources" : 
 	{
-		"CMakeFiles/Parallel.dir/main.cpp.obj" : 
+		"CMakeFiles/Parallel.dir/src/main.cpp.obj" : 
 		{
 			"language" : "CXX",
-			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/main.cpp"
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/main.cpp"
 		}
 	}
 }
