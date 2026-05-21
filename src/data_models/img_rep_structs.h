@@ -15,7 +15,7 @@ struct pixel
 // This structure represents an image as a matrix of pixels, along with its dimensions (width and height).
 struct matrix_picture
 {
-    pixel** data;
+    pixel* data; // assigned with new pixel[width][height]
     short width;
     short height;
 };
@@ -27,7 +27,7 @@ struct matrix_picture
 struct mask
 {
     short corner_coordinates[2];
-    bool** selection_matrix;
+    bool* selection_matrix; // assigned with new bool[mask_width][mask_height]
     short width;
     short height;
 };
@@ -38,7 +38,7 @@ struct mask
 // The divisor field is used to normalize the filter output
 struct vector_filter
 {
-    short* coefficients;
+    short* coefficients; // assigned with new short[size]
     short size;
     short divisor;
 };
