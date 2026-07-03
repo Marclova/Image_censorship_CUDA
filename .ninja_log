@@ -5,3 +5,9 @@
 1327	1440	8002967346103848	CMakeFiles/Parallel.dir/main.cpp.obj.modmap	beb05814793efcb7
 1457	7765	8002967346433860	CMakeFiles/Parallel.dir/main.cpp.obj	5d527a9ec5464651
 7775	10108	8002967409603753	Parallel.exe	344a83a32ef37bb8
+88	1939	8046242868786423	CMakeFiles/Parallel.dir/src/main.cpp.obj.ddi	4deb28de6f82a694
+1940	2083	8046242887308376	CMakeFiles/Parallel.dir/CXX.dd	f82fd701ea651cdc
+1940	2083	8046242887308376	CMakeFiles/Parallel.dir/CXXModules.json	f82fd701ea651cdc
+1940	2083	8046242887308376	CMakeFiles/Parallel.dir/src/main.cpp.obj.modmap	f82fd701ea651cdc
+2104	11015	8046242888931411	CMakeFiles/Parallel.dir/src/main.cpp.obj	aaccd7cad35535f
+11030	15884	8046242978196494	Parallel.exe	4b7fb690840b0d51
