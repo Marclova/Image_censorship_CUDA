@@ -14,6 +14,7 @@
 	"forward-modules-from-target-dirs" : [],
 	"include-dirs" : 
 	[
+		"src",
 		"C:\\Users\\abiga\\Desktop\\vcpkg\\installed\\x64-windows\\include\\opencv4"
 	],
 	"language" : "CXX",
@@ -21,6 +22,16 @@
 	"module-dir" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/CMakeFiles/Parallel.dir",
 	"sources" : 
 	{
+		"CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_loader.cpp"
+		},
+		"CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_mask.cpp"
+		},
 		"CMakeFiles/Parallel.dir/src/main.cpp.obj" : 
 		{
 			"language" : "CXX",

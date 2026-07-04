@@ -4,6 +4,8 @@
 // This structure defines the pixel structure used to represent a pixel in an image.
 // Coordinates are managed separately, so this structure only contains the color information (RGB).
 // Each color is represented as a char, but it's supposed to be assigned and managed as a numeric value (0-255)
+
+#pragma once
 struct pixel
 {
     unsigned char r;
@@ -15,7 +17,7 @@ struct pixel
 // This structure represents an image as a matrix of pixels, along with its dimensions (width and height).
 struct matrix_picture
 {
-    pixel* data; // assigned with new pixel[width][height]
+    pixel* data; // assigned with new pixel[width * height]
     short width;
     short height;
 };

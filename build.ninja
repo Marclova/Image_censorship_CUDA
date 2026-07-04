@@ -53,7 +53,7 @@ build CMakeFiles/Parallel.dir/src/main.cpp.obj.ddi: CXX_SCAN__Parallel_Debug C$:
   DEP_FILE = CMakeFiles\Parallel.dir\src\main.cpp.obj.ddi.d
   DYNDEP_INTERMEDIATE_FILE = CMakeFiles\Parallel.dir\src\main.cpp.obj.ddi
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
+  INCLUDES = -IC:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
   OBJ_FILE = CMakeFiles\Parallel.dir\src\main.cpp.obj
   PREPROCESSED_OUTPUT_FILE = CMakeFiles\Parallel.dir\src\main.cpp.obj.ddi.i
 
@@ -62,13 +62,51 @@ build CMakeFiles/Parallel.dir/src/main.cpp.obj: CXX_COMPILER__Parallel_scanned_D
   DEP_FILE = CMakeFiles\Parallel.dir\src\main.cpp.obj.d
   DYNDEP_MODULE_MAP_FILE = CMakeFiles\Parallel.dir\src\main.cpp.obj.modmap
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
+  INCLUDES = -IC:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
   OBJECT_DIR = CMakeFiles\Parallel.dir
   OBJECT_FILE_DIR = CMakeFiles\Parallel.dir\src
   TARGET_SUPPORT_DIR = CMakeFiles\Parallel.dir
   dyndep = CMakeFiles/Parallel.dir/CXX.dd
 
-build CMakeFiles/Parallel.dir/CXX.dd | CMakeFiles/Parallel.dir/CXXModules.json CMakeFiles/Parallel.dir/src/main.cpp.obj.modmap: CXX_DYNDEP__Parallel_Debug CMakeFiles/Parallel.dir/src/main.cpp.obj.ddi | C$:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/CMakeFiles/Parallel.dir/CXXDependInfo.json
+build CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj.ddi: CXX_SCAN__Parallel_Debug C$:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_loader.cpp || cmake_object_order_depends_target_Parallel
+  DEP_FILE = CMakeFiles\Parallel.dir\src\CPU\image_loader.cpp.obj.ddi.d
+  DYNDEP_INTERMEDIATE_FILE = CMakeFiles\Parallel.dir\src\CPU\image_loader.cpp.obj.ddi
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
+  OBJ_FILE = CMakeFiles\Parallel.dir\src\CPU\image_loader.cpp.obj
+  PREPROCESSED_OUTPUT_FILE = CMakeFiles\Parallel.dir\src\CPU\image_loader.cpp.obj.ddi.i
+
+build CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj: CXX_COMPILER__Parallel_scanned_Debug C$:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_loader.cpp | CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj.modmap || cmake_object_order_depends_target_Parallel CMakeFiles/Parallel.dir/CXX.dd
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\Parallel.dir\src\CPU\image_loader.cpp.obj.d
+  DYNDEP_MODULE_MAP_FILE = CMakeFiles\Parallel.dir\src\CPU\image_loader.cpp.obj.modmap
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
+  OBJECT_DIR = CMakeFiles\Parallel.dir
+  OBJECT_FILE_DIR = CMakeFiles\Parallel.dir\src\CPU
+  TARGET_SUPPORT_DIR = CMakeFiles\Parallel.dir
+  dyndep = CMakeFiles/Parallel.dir/CXX.dd
+
+build CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj.ddi: CXX_SCAN__Parallel_Debug C$:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_mask.cpp || cmake_object_order_depends_target_Parallel
+  DEP_FILE = CMakeFiles\Parallel.dir\src\CPU\image_mask.cpp.obj.ddi.d
+  DYNDEP_INTERMEDIATE_FILE = CMakeFiles\Parallel.dir\src\CPU\image_mask.cpp.obj.ddi
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
+  OBJ_FILE = CMakeFiles\Parallel.dir\src\CPU\image_mask.cpp.obj
+  PREPROCESSED_OUTPUT_FILE = CMakeFiles\Parallel.dir\src\CPU\image_mask.cpp.obj.ddi.i
+
+build CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj: CXX_COMPILER__Parallel_scanned_Debug C$:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_mask.cpp | CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj.modmap || cmake_object_order_depends_target_Parallel CMakeFiles/Parallel.dir/CXX.dd
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles\Parallel.dir\src\CPU\image_mask.cpp.obj.d
+  DYNDEP_MODULE_MAP_FILE = CMakeFiles\Parallel.dir\src\CPU\image_mask.cpp.obj.modmap
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -IC:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src -isystem C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/include/opencv4
+  OBJECT_DIR = CMakeFiles\Parallel.dir
+  OBJECT_FILE_DIR = CMakeFiles\Parallel.dir\src\CPU
+  TARGET_SUPPORT_DIR = CMakeFiles\Parallel.dir
+  dyndep = CMakeFiles/Parallel.dir/CXX.dd
+
+build CMakeFiles/Parallel.dir/CXX.dd | CMakeFiles/Parallel.dir/CXXModules.json CMakeFiles/Parallel.dir/src/main.cpp.obj.modmap CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj.modmap CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj.modmap: CXX_DYNDEP__Parallel_Debug CMakeFiles/Parallel.dir/src/main.cpp.obj.ddi CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj.ddi CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj.ddi | C$:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/CMakeFiles/Parallel.dir/CXXDependInfo.json
 
 
 # =============================================================================
@@ -78,7 +116,7 @@ build CMakeFiles/Parallel.dir/CXX.dd | CMakeFiles/Parallel.dir/CXXModules.json C
 #############################################
 # Link the executable Parallel.exe
 
-build Parallel.exe: CXX_EXECUTABLE_LINKER__Parallel_Debug CMakeFiles/Parallel.dir/src/main.cpp.obj | C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_highgui4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_videoio4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_imgcodecs4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_imgproc4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_core4d.lib
+build Parallel.exe: CXX_EXECUTABLE_LINKER__Parallel_Debug CMakeFiles/Parallel.dir/src/main.cpp.obj CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj | C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_highgui4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_videoio4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_imgcodecs4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_imgproc4d.lib C$:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_core4d.lib
   CONFIG = Debug
   FLAGS = -g
   LINK_LIBRARIES = C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_highgui4d.lib  C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_videoio4d.lib  C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_imgcodecs4d.lib  C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_imgproc4d.lib  C:/Users/abiga/Desktop/vcpkg/installed/x64-windows/debug/lib/opencv_core4d.lib  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
