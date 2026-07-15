@@ -5,6 +5,7 @@
 
 using namespace cv;
 
+
 matrix_picture load_image(const char* filename)
 {
     // Carica l'immagine dal disco
@@ -38,5 +39,39 @@ matrix_picture load_image(const char* filename)
         }
     }
 
+    //TEST
+   /** bool correct = true;
+
+    for (int y = 0; y < picture.height; y++)
+    {
+        for (int x = 0; x < picture.width; x++)
+        {
+            int index = y * picture.width + x;
+
+            cv::Vec3b original = img.at<cv::Vec3b>(y,x);
+
+            if(picture.data[index].r != original[2] ||
+               picture.data[index].g != original[1] ||
+               picture.data[index].b != original[0])
+            {
+                std::cout << "Errore pixel: "
+                          << x << "," << y << std::endl;
+
+                correct = false;
+                break;
+            }
+        }
+
+        if (!correct)
+            break;
+    }
+
+
+    if (correct)
+        std::cout << "Tutti i pixel sono corretti!" << std::endl; **/
+
     return picture;
+
+
+
 }

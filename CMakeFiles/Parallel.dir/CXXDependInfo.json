@@ -1,7 +1,7 @@
 {
 	"bmi-installation" : null,
-	"compiler-frontend-variant" : "GNU",
-	"compiler-id" : "GNU",
+	"compiler-frontend-variant" : "MSVC",
+	"compiler-id" : "MSVC",
 	"compiler-simulate-id" : "",
 	"config" : "Debug",
 	"cxx-modules" : {},
