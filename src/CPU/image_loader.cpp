@@ -4,74 +4,90 @@
 #include <stdexcept>
 
 using namespace cv;
+using namespace std;
 
 
+/*
+ * Carica un'immagine dal disco e la converte
+ * nella struttura matrix_picture.
+ */
 matrix_picture load_image(const char* filename)
 {
-    // Carica l'immagine dal disco
-    Mat img = imread(filename, IMREAD_COLOR);
+    Mat img = imread(filename);
 
-    if (img.empty())
+    if(img.empty())
     {
-        throw std::runtime_error("Error loading image.");
+        cout << "Error loading image!" << endl;
+        exit(1);
     }
 
     matrix_picture picture;
 
-    picture.width = static_cast<short>(img.cols);
-    picture.height = static_cast<short>(img.rows);
+    picture.width = img.cols;
+    picture.height = img.rows;
 
-    // Alloca un unico blocco di memoria per tutti i pixel
+    // Alloca un array lineare di pixel
     picture.data = new pixel[picture.width * picture.height];
 
-    // Copia i pixel da OpenCV alla struttura matrix_picture
-    for (short y = 0; y < picture.height; y++)
+    // Copia tutti i pixel
+    for(short y = 0; y < picture.height; y++)
     {
-        for (short x = 0; x < picture.width; x++)
+        for(short x = 0; x < picture.width; x++)
         {
             Vec3b color = img.at<Vec3b>(y, x);
 
             int index = y * picture.width + x;
 
-            picture.data[index].r = color[2]; // Red
-            picture.data[index].g = color[1]; // Green
-            picture.data[index].b = color[0]; // Blue
+            picture.data[index].r = color[2];
+            picture.data[index].g = color[1];
+            picture.data[index].b = color[0];
         }
     }
 
-    //TEST
-   /** bool correct = true;
+    return picture;
+}
 
-    for (int y = 0; y < picture.height; y++)
+
+/*
+ * Converte una matrix_picture in un'immagine
+ * e la salva sul disco.
+ */
+void save_image(const matrix_picture& picture,
+                const char* filename)
+{
+    Mat img(picture.height,
+            picture.width,
+            CV_8UC3);
+
+    for(short y = 0; y < picture.height; y++)
     {
-        for (int x = 0; x < picture.width; x++)
+        for(short x = 0; x < picture.width; x++)
         {
             int index = y * picture.width + x;
 
-            cv::Vec3b original = img.at<cv::Vec3b>(y,x);
+            Vec3b color;
 
-            if(picture.data[index].r != original[2] ||
-               picture.data[index].g != original[1] ||
-               picture.data[index].b != original[0])
-            {
-                std::cout << "Errore pixel: "
-                          << x << "," << y << std::endl;
+            color[0] = picture.data[index].b;
+            color[1] = picture.data[index].g;
+            color[2] = picture.data[index].r;
 
-                correct = false;
-                break;
-            }
+            img.at<Vec3b>(y, x) = color;
         }
-
-        if (!correct)
-            break;
     }
 
-
-    if (correct)
-        std::cout << "Tutti i pixel sono corretti!" << std::endl; **/
-
-    return picture;
+    imwrite(filename, img);
+}
 
 
+/*
+ * Libera la memoria occupata
+ * dall'immagine.
+ */
+void destroy_image(matrix_picture& picture)
+{
+    delete[] picture.data;
 
+    picture.data = nullptr;
+    picture.width = 0;
+    picture.height = 0;
 }

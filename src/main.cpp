@@ -3,12 +3,37 @@
 #include "CPU/image_loader.h"
 #include "CPU/image_mask.h"
 
+
 int main()
 {
     matrix_picture image = load_image("src/Images/gattinoProva.png");
 
 
-    std::cout << "Image loaded successfully!" << std::endl;
+    //Salvare l'immagine che prima era una matrice
+    //save_image(image, "src/images/cat_copy3.png");
+
+    destroy_image(image);
+
+    return 0;
+
+    // mask m = create_mask(4,3);
+    //
+    // m.corner_coordinates[0] = 100;
+    // m.corner_coordinates[1] = 200;
+    //
+    // set_mask_pixel(m,0,0,true);
+    // set_mask_pixel(m,1,0,true);
+    // set_mask_pixel(m,2,0,true);
+    //
+    // set_mask_pixel(m,1,1,true);
+    //
+    // set_mask_pixel(m,3,2,true);
+    //
+    // process_selected_pixels(image,m);
+    //
+    // destroy_mask(m);
+
+ /**   std::cout << "Image loaded successfully!" << std::endl;
     std::cout << "Width : " << image.width << std::endl;
     std::cout << "Height: " << image.height << std::endl;
 
@@ -24,6 +49,7 @@ int main()
 
     destroy_mask(m);
 
+**/
 
 
     // Libera la memoria quando non serve più
