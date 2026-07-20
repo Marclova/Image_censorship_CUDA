@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "CPU/process_manager.h"
+#include "data_models/graphics.h"
 #include "CPU/image_loader.h"
 #include "CPU/image_mask.h"
 

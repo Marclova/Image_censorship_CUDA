@@ -10,7 +10,7 @@
 
 #include "../GPU/image_blur_module/image_blur_api.h"
 
-#include "../data_models/vector_filter.h"
+#include "../data_models/vector_filter_constants.h"
 
 
 
