@@ -6,7 +6,7 @@
 
 
 #include "image_loader.h"
-#include "image_mask.h"
+#include "../UI/image_mask.h"
 
 #include "../GPU/image_blur_module/image_blur_api.h"
 

@@ -27,15 +27,15 @@
 			"language" : "CXX",
 			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_loader.cpp"
 		},
-		"CMakeFiles/Parallel.dir/src/CPU/image_mask.cpp.obj" : 
-		{
-			"language" : "CXX",
-			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/image_mask.cpp"
-		},
 		"CMakeFiles/Parallel.dir/src/CPU/process_manager.cpp.obj" : 
 		{
 			"language" : "CXX",
 			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/CPU/process_manager.cpp"
+		},
+		"CMakeFiles/Parallel.dir/src/UI/image_mask.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/UI/image_mask.cpp"
 		},
 		"CMakeFiles/Parallel.dir/src/main.cpp.obj" : 
 		{
