@@ -1,5 +1,5 @@
 #include <cuda.h>
-#include "src/data_models/img_rep_structs.h"
+#include "../data_models/graphics.h"
 
 
 

@@ -1,5 +1,5 @@
 // This file defines the pre-calculated vector filter coefficients for image processing.
-#include "src/data_models/img_rep_structs.h"
+#include "data_models/graphics.h"
 
 
 

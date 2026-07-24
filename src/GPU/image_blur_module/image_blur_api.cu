@@ -1,6 +1,6 @@
-#include "src/data_models/img_rep_structs.h"
-#include "src/GPU/image_blur_module/image_blur_api.h"
-#include "src/GPU/image_blur_module/image_blur_operator.cu"
+// #include "../data_models/graphics.h"
+#include "../GPU/image_blur_module/image_blur_api.h"
+#include "../GPU/image_blur_module/image_blur_operator.cu"
 
 
 
