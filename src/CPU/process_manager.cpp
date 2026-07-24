@@ -27,7 +27,7 @@ void blur_image_process(
         1) Carica immagine
     */
 
-    matrix_picture image = load_image(input_image);
+    vector_picture image = load_image(input_image);
 
 
 
@@ -70,7 +70,7 @@ void blur_image_process(
         - filtro
     */
 
-    matrix_picture output =
+    vector_picture output =
             blur_image(
                     image,
                     mask_array,

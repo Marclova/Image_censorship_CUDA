@@ -9,9 +9,9 @@ using namespace std;
 
 /*
  * Carica un'immagine dal disco e la converte
- * nella struttura matrix_picture.
+ * nella struttura vector_picture.
  */
-matrix_picture load_image(const char* filename)
+vector_picture load_image(const char* filename)
 {
     Mat img = imread(filename);
 
@@ -21,7 +21,7 @@ matrix_picture load_image(const char* filename)
         exit(1);
     }
 
-    matrix_picture picture;
+    vector_picture picture;
 
     picture.width = img.cols;
     picture.height = img.rows;
@@ -49,10 +49,10 @@ matrix_picture load_image(const char* filename)
 
 
 /*
- * Converte una matrix_picture in un'immagine
+ * Converte una vector_picture in un'immagine
  * e la salva sul disco.
  */
-void save_image(const matrix_picture& picture,
+void save_image(const vector_picture& picture,
                 const char* filename)
 {
     Mat img(picture.height,
@@ -83,7 +83,7 @@ void save_image(const matrix_picture& picture,
  * Libera la memoria occupata
  * dall'immagine.
  */
-void destroy_image(matrix_picture& picture)
+void destroy_image(vector_picture& picture)
 {
     delete[] picture.data;
 

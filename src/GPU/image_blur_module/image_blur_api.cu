@@ -4,7 +4,7 @@
 
 
 
-matrix_picture blur_image(const matrix_picture input_image, const mask mask_array[], const vector_filter filter)
+vector_picture blur_image(const vector_picture input_image, const mask mask_array[], const vector_filter filter)
 {
         // definition and allocation of variables on the GPU
         pixel *d_input_image_data;
@@ -53,7 +53,7 @@ matrix_picture blur_image(const matrix_picture input_image, const mask mask_arra
         pixel *h_output_image_data = (pixel *)malloc(sizeof(pixel)*input_image.width*input_image.height);
         cudaMemcpy(h_output_image_data, d_output_image_data, sizeof(pixel)*input_image.width*input_image.height, cudaMemcpyDeviceToHost);
 
-        matrix_picture image_to_return = {
+        vector_picture image_to_return = {
             h_output_image_data,
             input_image.width,
             input_image.height

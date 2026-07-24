@@ -8,7 +8,7 @@
 
 int main()
 {
-    matrix_picture image = load_image("src/Images/gattinoProva.png");
+    vector_picture image = load_image("src/Images/gattinoProva.png");
 
 
     //Salvare l'immagine che prima era una matrice

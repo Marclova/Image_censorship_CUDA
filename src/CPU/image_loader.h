@@ -2,9 +2,9 @@
 
 #include "../data_models/graphics.h"
 
-matrix_picture load_image(const char* filename);
+vector_picture load_image(const char* filename);
 
-void save_image(const matrix_picture& picture,
+void save_image(const vector_picture& picture,
                 const char* filename);
 
-void destroy_image(matrix_picture& picture);
+void destroy_image(vector_picture& picture);

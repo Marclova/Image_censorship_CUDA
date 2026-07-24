@@ -13,9 +13,8 @@ struct pixel
     unsigned char b;   
 };
 
-
 // This structure represents an image as a matrix of pixels, along with its dimensions (width and height).
-struct matrix_picture
+struct vector_picture
 {
     pixel* data; // assigned with new pixel[width * height]
     short width;
