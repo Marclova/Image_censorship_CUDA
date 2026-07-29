@@ -1,7 +1,0 @@
-ninja_dyndep_version = 1.0
-build CMakeFiles\Parallel.dir\src\main.cpp.obj: dyndep
-
-build CMakeFiles\Parallel.dir\src\CPU\image_loader.cpp.obj: dyndep
-
-build CMakeFiles\Parallel.dir\src\CPU\image_mask.cpp.obj: dyndep
-

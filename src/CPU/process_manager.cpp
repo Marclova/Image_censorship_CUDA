@@ -6,7 +6,7 @@
 
 
 #include "image_loader.h"
-#include "../UI/image_mask.h"
+
 
 #include "../GPU/image_blur_module/image_blur_api.h"
 
@@ -18,7 +18,6 @@ void blur_image_process(
         const char* input_image,
         const char* output_image,
         const mask mask_array[],
-        short mask_count,
         short filter_size
 )
 {
@@ -74,7 +73,6 @@ void blur_image_process(
             blur_image(
                     image,
                     mask_array,
-                    mask_count,
                     filter
             );
 
@@ -86,7 +84,7 @@ void blur_image_process(
 
     save_image(
             output,
-            output_image
+            input_image
     );
 
 
@@ -94,9 +92,7 @@ void blur_image_process(
     /*
         5) Pulizia memoria
     */
-
     destroy_image(image);
 
     destroy_image(output);
-
 }
