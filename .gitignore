@@ -3,3 +3,6 @@
 /Scratches and Consoles
 /.vscode
 /Out
+*.obj
+*.pdb
+*.exe

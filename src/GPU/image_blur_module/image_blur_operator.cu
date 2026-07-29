@@ -1,5 +1,51 @@
 #include <cuda.h>
-#include "../data_models/graphics.h"
+#include "src/data_models/graphics.h"
+#include "image_blur_operator.h"
+
+
+
+__device__ short from_coordinates_to_index(short const x, short const y, short const matrix_width)
+{
+    return (y * matrix_width) + x;
+}
+
+
+__device__ short clamp_out_of_bounds(short const coordinate, short const max_value)
+{
+    if (coordinate >= max_value)
+    {
+        return max_value - 1;
+    }
+    else if (coordinate < 0)
+    {
+        return 0;
+    }
+    return coordinate;
+}
+
+
+__device__ bool is_operation_cancelled(short const x, short const y, short const image_x, short const image_y, 
+                                       short const image_width, short const image_height, mask const mask)
+{
+    // check out of bounds for the image
+    if (image_x >= image_width || image_y >= image_height
+        || image_x < 0 || image_y < 0)
+    {
+        return false;
+    }
+    // check out of bounds for the mask
+    if (x >= mask.width || y >= mask.height
+        || x < 0 || y < 0)
+    {
+	    return false;
+    }
+    //check if the pixel is selected for blurring
+    if(!mask.selection_matrix[from_coordinates_to_index(x, y, mask.width)])
+    {
+        return false;
+    }
+    return true;
+}
 
 
 
@@ -75,49 +121,4 @@ __global__ void calculate_vertical_convolution_and_write_results(
     output_image[image_index].r = r;
     output_image[image_index].g = g;
     output_image[image_index].b = b;
-}
-
-
-
-__device__ short from_coordinates_to_index(short const x, short const y, short const matrix_width)
-{
-    return (y * matrix_width) + x;
-}
-
-
-__device__ short clamp_out_of_bounds(short const coordinate, short const max_value)
-{
-    if (coordinate >= max_value)
-    {
-        return max_value - 1;
-    }
-    else if (coordinate < 0)
-    {
-        return 0;
-    }
-    return coordinate;
-}
-
-
-__device__ bool is_operation_cancelled(short const x, short const y, short const image_x, short const image_y, 
-                                       short const image_width, short const image_height, mask const mask)
-{
-    // check out of bounds for the image
-    if (image_x >= image_width || image_y >= image_height
-        || image_x < 0 || image_y < 0)
-    {
-        return false;
-    }
-    // check out of bounds for the mask
-    if (x >= mask.width || y >= mask.height
-        || x < 0 || y < 0)
-    {
-	    return false;
-    }
-    //check if the pixel is selected for blurring
-    if(!mask.selection_matrix[from_coordinates_to_index(x, y, mask.width)])
-    {
-        return false;
-    }
-    return true;
 }

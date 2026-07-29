@@ -74,7 +74,6 @@ void blur_image_process(
             blur_image(
                     image,
                     mask_array,
-                    mask_count,
                     filter
             );
 

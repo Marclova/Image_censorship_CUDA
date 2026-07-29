@@ -1,6 +1,7 @@
-// #include "../data_models/graphics.h"
-#include "../GPU/image_blur_module/image_blur_api.h"
-#include "../GPU/image_blur_module/image_blur_operator.cu"
+#include <cuda_runtime_api.h>
+
+#include "image_blur_api.h"
+#include "image_blur_operator.h"
 
 
 
