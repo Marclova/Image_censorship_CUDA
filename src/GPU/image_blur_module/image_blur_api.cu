@@ -1,4 +1,5 @@
 #include <cuda_runtime_api.h>
+#include "src/data_models/graphics.h"
 
 #include "image_blur_api.h"
 #include "image_blur_operator.h"
@@ -24,28 +25,28 @@ vector_picture blur_image(const vector_picture input_image, const mask mask_arra
         short mask_count = sizeof(mask_array) / sizeof(mask_array[0]);
         dim3 block(block_size, block_size);
         dim3* grid_array = new dim3[mask_count];
-
+        
         // creating a grid for each mask and starting a partial computation for each mask
         for (size_t i = 0; i < mask_count; i++)
         {
             mask selected_mask = mask_array[i];
-
+        
             // a grid is composed of multiple blocks with fixed dimension; in a way to fit the mask size and overall shape
             short grid_x = ceil(selected_mask.width / block_size);
             short grid_y = ceil(selected_mask.height / block_size);
             grid_array[i] = dim3(grid_x, grid_y);
-
-            calculate_horizontal_convolution<<<grid_array[i], block>>>(d_input_image_data, d_partial_calculation_matrix, 
-                                                      input_image.width, input_image.height, 
+        
+            calculate_horizontal_convolution<<<grid_array[i], block>>>(d_input_image_data, d_partial_calculation_matrix,
+                                                      input_image.width, input_image.height,
                                                       selected_mask, filter);
         }
         cudaDeviceSynchronize(); // synchronize calculations on d_partial_calculation_matrix before applying the filter
         for (size_t i = 0; i < mask_count; i++)
         {
             mask selected_mask = mask_array[i];
-
+        
             calculate_vertical_convolution_and_write_results<<<grid_array[i], block>>>(
-                d_output_image_data, d_partial_calculation_matrix, 
+                d_output_image_data, d_partial_calculation_matrix,
                 input_image.width, input_image.height, selected_mask, filter);
         }
 
@@ -59,7 +60,7 @@ vector_picture blur_image(const vector_picture input_image, const mask mask_arra
             input_image.width,
             input_image.height
         };
-        
+
         // free the allocated memory
         cudaFree(d_input_image_data);
         cudaFree(d_output_image_data);

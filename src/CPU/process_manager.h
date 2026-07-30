@@ -17,6 +17,6 @@ void blur_image_process(
         const char* input_image,
         const char* output_image,
         const mask mask_array[],
-        short mask_count,
+ //       short mask_count,
         short filter_size
 );

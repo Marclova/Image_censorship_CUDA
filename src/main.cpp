@@ -4,19 +4,19 @@
 #include "data_models/graphics.h"
 #include "CPU/image_loader.h"
 #include "UI/image_mask.h"
-
-
-int main()
-{
-    vector_picture image = load_image("src/Images/gattinoProva.png");
-
+//
+//
+// int main()
+// {
+//     vector_picture image = load_image("src/Images/gattinoProva.png");
+//
 
     //Salvare l'immagine che prima era una matrice
     //save_image(image, "src/images/cat_copy3.png");
 
-    destroy_image(image);
-
-    return 0;
+    // destroy_image(image);
+    //
+    // return 0;
 
     // mask m = create_mask(4,3);
     //
@@ -52,10 +52,10 @@ int main()
     destroy_mask(m);
 
 **/
-
-
-    // Libera la memoria quando non serve più
-    delete[] image.data;
-
-    return 0;
-}
+//
+//
+//     // Libera la memoria quando non serve più
+//     delete[] image.data;
+//
+//     return 0;
+// }
