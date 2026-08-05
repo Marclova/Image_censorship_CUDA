@@ -1,4 +1,4 @@
-__global__ void calculate_horizontal_convolution(pixel const *input_image, pixel *partial_calculation_matrix,
+__global__ void calculate_horizontal_convolution(pixel *partial_calculation_matrix, pixel const *input_image, 
                                          short const image_width, short const image_height, 
                                          mask const mask, vector_filter const filter);
 

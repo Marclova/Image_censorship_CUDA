@@ -24,11 +24,11 @@ struct vector_picture
 
 // This structure defines the mask structure used to represent the selected pixels for censorship.
 // The corner field represents the top-left corner of the mask, 
-// and the selection_matrix is a boolean array that represents the relative positions of the selected pixels within the mask area.
+// and the selection_vector is a boolean array that represents the relative positions of the selected pixels within the mask area.
 struct mask
 {
     short corner_coordinates[2];
-    bool* selection_matrix; // assigned with new bool[mask_width][mask_height]
+    bool* selection_vector; // assigned with new bool[mask_width * mask_height]
     short width;
     short height;
 };

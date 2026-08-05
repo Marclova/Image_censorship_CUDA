@@ -1,24 +1,22 @@
 #include "image_mask.h"
 
 
-mask create_mask(short width, short height)
+mask create_mask(short absolute_x, short absolute_y, short width, short height)
 {
     mask m;
 
+    m.corner_coordinates[0] = absolute_x;
+    m.corner_coordinates[1] = absolute_y;
     m.width = width;
     m.height = height;
 
-    m.selection_matrix = new bool[width * height];
+    m.selection_vector = new bool[width * height];
 
 
     for(int i = 0; i < width * height; i++)
     {
-        m.selection_matrix[i] = false;
+        m.selection_vector[i] = false;
     }
-
-
-    m.corner_coordinates[0] = 0;
-    m.corner_coordinates[1] = 0;
 
 
     return m;
@@ -28,9 +26,9 @@ mask create_mask(short width, short height)
 
 void destroy_mask(mask& m)
 {
-    delete[] m.selection_matrix;
+    delete[] m.selection_vector;
 
-    m.selection_matrix = nullptr;
+    m.selection_vector = nullptr;
 }
 
 
@@ -39,7 +37,15 @@ void set_mask_pixel(mask& m, short x, short y, bool value)
 {
     int index = y * m.width + x;
 
-    m.selection_matrix[index] = value;
+    m.selection_vector[index] = value;
+}
+
+
+
+void set_mask_coordinates(mask& m, short new_x_coordinate, short new_y_coordinate)
+{
+    m.corner_coordinates[0] = new_x_coordinate;
+    m.corner_coordinates[1] = new_y_coordinate;
 }
 
 
@@ -48,5 +54,5 @@ bool get_mask_pixel(const mask& m, short x, short y)
 {
     int index = y * m.width + x;
 
-    return m.selection_matrix[index];
+    return m.selection_vector[index];
 }

@@ -12,7 +12,7 @@
 #include "../data_models/graphics.h"
 
 // Crea una maschera vuota
-mask create_mask(short width, short height);
+mask create_mask(short absolute_x, short absolute_y, short width, short height);
 
 // Libera la memoria occupata dalla maschera
 void destroy_mask(mask& m);

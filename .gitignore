@@ -1,8 +1,8 @@
 /.idea
 /External Libraries
 /Scratches and Consoles
-/.vscode
 /Out
+/src/images
 *.obj
 *.pdb
 *.exe

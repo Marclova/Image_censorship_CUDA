@@ -70,7 +70,7 @@ pixel (6B)
 
 matrix_picture (6B/pixel+8B)
 {
-    pixel[][] data;
+    pixel[] data;
     short width;
     short height;
 };
@@ -78,7 +78,7 @@ matrix_picture (6B/pixel+8B)
 mask (1B/pixel+16B)
 {
     short corner_coordinates[2];
-    bool[][] selection_matrix;
+    bool[] selection_vector;
     short width;
     short height;
 };

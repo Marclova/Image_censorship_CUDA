@@ -1,6 +1,5 @@
-//
-// Created by abiga on 17/07/2026.
-//
+#include <stdexcept>
+#include <vector>
 
 #include "process_manager.h"
 
@@ -14,10 +13,10 @@
 
 
 
-void blur_image_process(
-        const char* input_image,
-        const char* output_image,
-        const mask mask_array[],
+vector_picture blur_image_process(
+        const char* input_image_path,
+        const char* output_image_path,
+        const std::vector<mask> mask_vector,
         short filter_size
 )
 {
@@ -26,7 +25,7 @@ void blur_image_process(
         1) Carica immagine
     */
 
-    vector_picture image = load_image(input_image);
+    vector_picture input_image_vector = load_image(input_image_path);
 
 
 
@@ -69,10 +68,11 @@ void blur_image_process(
         - filtro
     */
 
-    vector_picture output =
+    vector_picture output_image_vector =
             blur_image(
-                    image,
-                    mask_array,
+                    input_image_vector,
+                    mask_vector.data(),
+                    mask_vector.size(),
                     filter
             );
 
@@ -82,17 +82,20 @@ void blur_image_process(
         4) Salvataggio
     */
 
+        //rename filename.png into filename_modified.png
+    // std::string output_image_path = std::string(input_image_path).substr(0, std::string(input_image_path).find_last_of(".")) + "_modified.png";
+
     save_image(
-            output,
-            input_image
+            output_image_vector,
+            output_image_path
     );
 
-
+    return output_image_vector;
 
     /*
         5) Pulizia memoria
     */
-    destroy_image(image);
+    // destroy_image(input_image_vector);
 
-    destroy_image(output);
+    // destroy_image(output_image_vector);
 }

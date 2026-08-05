@@ -8,15 +8,15 @@
 #endif //PARALLEL_PROCESS_MANAGER_H
 #pragma once
 
-#include "../data_models/graphics.h"
+#include "src/data_models/graphics.h"
+#include <vector>
 
 
 // Gestisce il processo completo di blur:
 // carica immagine -> applica blur -> salva risultato.
-void blur_image_process(
-        const char* input_image,
-        const char* output_image,
-        const mask mask_array[],
- //       short mask_count,
+vector_picture blur_image_process(
+        const char* input_image_path,
+        const char* output_image_path,
+        const std::vector<mask> mask_vector,
         short filter_size
 );
