@@ -1,4 +1,5 @@
 #include "image_mask.h"
+#include "ui.h"
 
 
 mask create_mask(short width, short height)
@@ -20,7 +21,6 @@ mask create_mask(short width, short height)
     m.corner_coordinates[0] = 0;
     m.corner_coordinates[1] = 0;
 
-
     return m;
 }
 
@@ -37,8 +37,13 @@ void destroy_mask(mask& m)
 
 void set_mask_pixel(mask& m, short x, short y, bool value)
 {
-    int index = y * m.width + x;
+    if (x < 0 || x >= m.width ||
+       y < 0 || y >= m.height)
+    {
+        return;
+    }
 
+    int index = y * m.width + x;
     m.selection_matrix[index] = value;
 }
 
@@ -46,7 +51,12 @@ void set_mask_pixel(mask& m, short x, short y, bool value)
 
 bool get_mask_pixel(const mask& m, short x, short y)
 {
-    int index = y * m.width + x;
+    if (x < 0 || x >= m.width ||
+        y < 0 || y >= m.height)
+    {
+        return false;
+    }
 
+    int index = y * m.width + x;
     return m.selection_matrix[index];
 }

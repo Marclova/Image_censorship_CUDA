@@ -9,14 +9,14 @@
 #pragma once
 
 #include "../data_models/graphics.h"
+#include <iostream>
 
 
 // Gestisce il processo completo di blur:
 // carica immagine -> applica blur -> salva risultato.
-void blur_image_process(
+std::string blur_image_process(
         const char* input_image,
-        const char* output_image,
         const mask mask_array[],
- //       short mask_count,
+        short mask_number,
         short filter_size
 );

@@ -1,3 +1,27 @@
+#include "UI/ui.h"
+
+int main()
+{
+    start_ui();
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include <iostream>
 
 #include "CPU/process_manager.h"

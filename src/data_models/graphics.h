@@ -28,7 +28,7 @@ struct vector_picture
 struct mask
 {
     short corner_coordinates[2];
-    bool* selection_matrix; // assigned with new bool[mask_width][mask_height]
+    bool* selection_matrix; // assigned with new bool[mask_width* mask_height]
     short width;
     short height;
 };
