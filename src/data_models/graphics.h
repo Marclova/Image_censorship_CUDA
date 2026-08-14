@@ -42,4 +42,7 @@ struct vector_filter
     short* coefficients; // assigned with new short[size]
     short size;
     short divisor;
+
+    // vector_filter(short* coefficient, short size, short divisor) 
+    //     : coefficients(coefficient), size(size), divisor(divisor) {}
 };

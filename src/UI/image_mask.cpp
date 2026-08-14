@@ -13,6 +13,7 @@ mask create_mask(short absolute_x, short absolute_y, short width, short height)
     m.selection_vector = new bool[width * height];
 
 
+    // TODO: Consider removing this initialization, since 'false' should be the default value for bools
     for(int i = 0; i < width * height; i++)
     {
         m.selection_vector[i] = false;
