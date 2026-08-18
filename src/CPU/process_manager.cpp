@@ -102,5 +102,5 @@ vector_picture blur_image_process(
     */
     // destroy_image(input_image_vector);
 
-    destroy_image(output); //l'output per il momento è uguale all'immagine originale quindi puntano alla stessa locazione di memoria
+    // destroy_image(output); //l'output per il momento è uguale all'immagine originale quindi puntano alla stessa locazione di memoria
 }
