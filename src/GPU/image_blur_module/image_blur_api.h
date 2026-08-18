@@ -1,5 +1,4 @@
-#pragma once
+#include "src/data_models/graphics.h"
+#include <vector>
 
-#include "../../data_models/graphics.h"
-
-vector_picture blur_image(const vector_picture input_image, const mask mask_array[],short mask_number, const vector_filter filter);
+vector_picture blur_image(const vector_picture input_image, const mask mask_array[], const unsigned short mask_count, const vector_filter filter);

@@ -76,12 +76,7 @@ std::string save_image(const vector_picture& picture,
         }
     }
 
-    //imwrite(filename, img);
-    //rename filename.png into filename_modified.png
-    std::string new_filename = std::string(filename).substr(0, std::string(filename).find_last_of(".")) + "_modified.png";
-    imwrite(new_filename.c_str(), img);
-
-    return new_filename;
+    imwrite(filename, img);
 }
 
 

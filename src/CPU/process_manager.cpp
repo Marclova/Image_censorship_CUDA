@@ -1,6 +1,5 @@
-//
-// Created by abiga on 17/07/2026.
-//
+#include <stdexcept>
+#include <vector>
 
 #include "process_manager.h"
 #include <iostream>
@@ -14,10 +13,10 @@
 
 
 
-std::string blur_image_process(
-        const char* input_image,
-        const mask mask_array[],
-        short mask_number,
+vector_picture blur_image_process(
+        const char* input_image_path,
+        const char* output_image_path,
+        const std::vector<mask> mask_vector,
         short filter_size
 )
 {
@@ -27,7 +26,7 @@ std::string blur_image_process(
     */
     std::cout << "1. Carico immagine\n";
 
-    vector_picture image = load_image(input_image);
+    vector_picture input_image_vector = load_image(input_image_path);
 
     std::cout << "1. Immagine caricata\n";
 
@@ -72,11 +71,11 @@ std::string blur_image_process(
 
     std::cout << "3. Prima di blur_image\n";
 
-    vector_picture output =
+    vector_picture output_image_vector =
             blur_image(
-                    image,
-                    mask_array,
-                    mask_number,
+                    input_image_vector,
+                    mask_vector.data(),
+                    mask_vector.size(),
                     filter
             );
 
@@ -86,20 +85,22 @@ std::string blur_image_process(
         4) Salvataggio
     */
 
-    std::cout << "5. Prima di save_image\n";
+        //rename filename.png into filename_modified.png
+    // std::string output_image_path = std::string(input_image_path).substr(0, std::string(input_image_path).find_last_of(".")) + "_modified.png";
 
-    std::string output_filename = save_image(output, input_image);
+    save_image(
+            output_image_vector,
+            output_image_path
+    );
 
-    std::cout << "6. Dopo save_image\n";
-
-    return output_filename;
+    return output_image_vector;
 
     /*
         5) Pulizia memoria
 
         Cancellero dai commenti appena si sistemerà la parte blur_image()
     */
-    destroy_image(image);
+    // destroy_image(input_image_vector);
 
     destroy_image(output); //l'output per il momento è uguale all'immagine originale quindi puntano alla stessa locazione di memoria
 }

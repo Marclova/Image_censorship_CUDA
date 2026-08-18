@@ -17,20 +17,20 @@ struct pixel
 struct vector_picture
 {
     pixel* data; // assigned with new pixel[width * height]
-    short width;
-    short height;
+    unsigned short width;
+    unsigned short height;
 };
 
 
 // This structure defines the mask structure used to represent the selected pixels for censorship.
 // The corner field represents the top-left corner of the mask, 
-// and the selection_matrix is a boolean array that represents the relative positions of the selected pixels within the mask area.
+// and the selection_vector is a boolean array that represents the relative positions of the selected pixels within the mask area.
 struct mask
 {
-    short corner_coordinates[2];
-    bool* selection_matrix; // assigned with new bool[mask_width* mask_height]
-    short width;
-    short height;
+    unsigned short corner_coordinates[2];
+    bool* selection_vector; // assigned with new bool[mask_width * mask_height]
+    unsigned short width;
+    unsigned short height;
 };
 
 
@@ -39,7 +39,10 @@ struct mask
 // The divisor field is used to normalize the filter output
 struct vector_filter
 {
-    short* coefficients; // assigned with new short[size]
-    short size;
-    short divisor;
+    unsigned short* coefficients; // assigned with new short[size]
+    unsigned short size;
+    unsigned short divisor;
+
+    // vector_filter(short* coefficient, short size, short divisor) 
+    //     : coefficients(coefficient), size(size), divisor(divisor) {}
 };
