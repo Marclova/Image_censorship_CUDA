@@ -9,10 +9,11 @@
 
 
 
-static __device__ short from_coordinates_to_index(short const x, short const y, short const matrix_width, short matrix_height)
-{
-    assert(x >= 0 && x < matrix_width);
-    assert(y >= 0 && y < matrix_height);
+static __device__ unsigned int from_coordinates_to_index(unsigned short const x, unsigned short const y, 
+                                                         unsigned short const matrix_width, unsigned short matrix_height)
+{    
+    assert(x < matrix_width);
+    assert(y < matrix_height);
     
     return (y * matrix_width) + x;
 }
@@ -29,15 +30,11 @@ static __device__ short from_coordinates_to_index(short const x, short const y, 
 // }
 
 
-static __device__ short clamp_out_of_bounds(short const coordinate, short const border_value)
+static __device__ unsigned short clamp_out_of_bounds(unsigned short const coordinate, unsigned short const border_value)
 {
     if (coordinate >= border_value)
     {
         return border_value - 1;
-    }
-    else if (coordinate < 0)
-    {
-        return 0;
     }
     return coordinate;
 }
@@ -52,8 +49,8 @@ static __device__ bool shall_thread_operate(Device_mask_collection const mask_co
     // }
     
     // check if the mask's covered area extends up to this block
-    short mask_width = mask_collection.mask_metadata_array[blockIdx.z].width;
-    short mask_height = mask_collection.mask_metadata_array[blockIdx.z].height;
+    unsigned short mask_width = mask_collection.mask_metadata_array[blockIdx.z].width;
+    unsigned short mask_height = mask_collection.mask_metadata_array[blockIdx.z].height;
     // if (blockIdx.x >= ((mask_width + blockDim.x - 1) / blockDim.x))
     // {
     //     return false;
@@ -79,11 +76,9 @@ static __device__ bool shall_thread_operate(Device_mask_collection const mask_co
 }
 
 
-static __device__ bool is_pixel_selected(// short const mask_cord_x, short const mask_cord_y, 
-                                             // short const image_cord_x, short const image_cord_y, 
-                                             short const image_index, short const mask_index, 
-                                             short const image_width, short const image_height, 
-                                             const Device_mask_collection mask_collection)
+static __device__ bool is_pixel_selected(unsigned int const image_index, unsigned int const mask_index, 
+                                         unsigned short const image_width, unsigned short const image_height, 
+                                         const Device_mask_collection mask_collection)
 {
     // if (image_index >= (image_width*image_height) || 
     //     mask_index >= (mask_collection.mask_metadata_array[blockIdx.z].width*mask_collection.mask_metadata_array[blockIdx.z].height))
@@ -112,8 +107,8 @@ static __device__ bool is_pixel_selected(// short const mask_cord_x, short const
 
 // TODO: try to remove all usage of matrix coordinates and use vector coordinates instead (deleting the 'from_coordinates_to_index' function would be the best result)
 __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data_vector, pixel const *input_image_data, 
-                                         short const image_width, short const image_height, 
-                                         Device_mask_collection const mask_collection, vector_filter const filter)
+                                                 unsigned short const image_width, unsigned short const image_height, 
+                                                 Device_mask_collection const mask_collection, vector_filter const filter)
 {
     // if (threadIdx.x == 0 && threadIdx.y == 0)
     // {
@@ -131,14 +126,14 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
     Device_mask_metaData mask_metadata = mask_collection.mask_metadata_array[blockIdx.z];
     // Matrix coordinates are used despite the use of vector types due to implementation requirements for the binomial blur algorithm. 
     // coordinates within the mask (not image coordinates)
-    short mask_cord_x = threadIdx.x + (blockIdx.x*blockDim.x);
-    short mask_cord_y = threadIdx.y + (blockIdx.y*blockDim.y);
-    short mask_index = from_coordinates_to_index(mask_cord_x, mask_cord_y, mask_metadata.width, mask_metadata.height);
+    unsigned short mask_cord_x = threadIdx.x + (blockIdx.x*blockDim.x);
+    unsigned short mask_cord_y = threadIdx.y + (blockIdx.y*blockDim.y);
+    unsigned int mask_index = from_coordinates_to_index(mask_cord_x, mask_cord_y, mask_metadata.width, mask_metadata.height);
 
     // retrieve the corresponding coordinates in the image
-    short image_cord_x = mask_cord_x + mask_metadata.x_cord;
-    short image_cord_y = mask_cord_y + mask_metadata.y_cord;
-    short image_index = from_coordinates_to_index(image_cord_x, image_cord_y, image_width, image_height);
+    unsigned short image_cord_x = mask_cord_x + mask_metadata.x_cord;
+    unsigned short image_cord_y = mask_cord_y + mask_metadata.y_cord;
+    unsigned int image_index = from_coordinates_to_index(image_cord_x, image_cord_y, image_width, image_height);
 
     // if (!is_pixel_selected(mask_cord_x, mask_cord_y, image_cord_x, image_cord_y, image_width, image_height, 
     //                            mask_metadata))
@@ -152,15 +147,15 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
     // TODO: Optimize the iteration so that the coordinates conversion applies only once
     //calculate the partial results for a single pixel (other pixels in this mask will be calculated by other threads in the grid)
     short filter_spread = (filter.size-1) / 2; // the number of pixels to consider around the center pixel
-    short r = 0;
-    short g = 0;
-    short b = 0;
+    unsigned short r = 0;
+    unsigned short g = 0;
+    unsigned short b = 0;
     for (short i = -filter_spread; i <= filter_spread; i++)
     {
         // not defining 'convolution_y' because this is a vertical convolution, so the y coordinate is not modified
-        short convolution_x = clamp_out_of_bounds(image_cord_x + i, image_width);  // in the worst case scenario, the convolution will be the same for 'filter_spread+1' times, but trying to solve this with checks would worsen performance
-        short convolution_index = from_coordinates_to_index(convolution_x, image_cord_y, image_width, image_height);
-        short filter_coefficient = filter.coefficients[i + filter_spread];
+        unsigned short convolution_x = clamp_out_of_bounds(image_cord_x + i, image_width);  // in the worst case scenario, the convolution will be the same for 'filter_spread+1' times, but trying to solve this with checks would worsen performance
+        unsigned int convolution_index = from_coordinates_to_index(convolution_x, image_cord_y, image_width, image_height);
+        unsigned short filter_coefficient = filter.coefficients[i + filter_spread];
 
         r += input_image_data[convolution_index].r * filter_coefficient;
         g += input_image_data[convolution_index].g * filter_coefficient;
@@ -174,14 +169,14 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
     partial_calculation_data_vector[image_index].g += (unsigned char)g;
     partial_calculation_data_vector[image_index].b += (unsigned char)b;
     // free(&mask_selection_vector);
+    printf("<kernel horizontal convolution done>\n");
 }
 
 
 //TODO: consider to use mask as raw data instead of passing it as a structure
-__global__ void calculate_vertical_convolution_and_write_results(
-        pixel *output_image_data, pixel const *partial_calculation_data_vector,
-        short const image_width, short const image_height, 
-        Device_mask_collection const mask_collection, vector_filter const filter)
+__global__ void calculate_vertical_convolution_and_write_results(pixel *output_image_data, pixel const *partial_calculation_data_vector,
+                                                                 unsigned short const image_width, unsigned short const image_height, 
+                                                                 Device_mask_collection const mask_collection, vector_filter const filter)
 {
     if(!shall_thread_operate(mask_collection))
     {
@@ -191,14 +186,14 @@ __global__ void calculate_vertical_convolution_and_write_results(
     Device_mask_metaData mask_metadata = mask_collection.mask_metadata_array[blockIdx.z];
     // Matrix coordinates are used despite the use of vector types due to implementation requirements for the binomial blur algorithm. 
     // coordinates within the mask (not image coordinates)
-    short mask_cord_x = threadIdx.x + (blockIdx.x*blockDim.x);
-    short mask_cord_y = threadIdx.y + (blockIdx.y*blockDim.y);
-    short mask_index = from_coordinates_to_index(mask_cord_x, mask_cord_y, mask_metadata.width, mask_metadata.height);
+    unsigned short mask_cord_x = threadIdx.x + (blockIdx.x*blockDim.x);
+    unsigned short mask_cord_y = threadIdx.y + (blockIdx.y*blockDim.y);
+    unsigned int mask_index = from_coordinates_to_index(mask_cord_x, mask_cord_y, mask_metadata.width, mask_metadata.height);
 
     // retrieve the corresponding coordinates in the image
-    short image_cord_x = mask_cord_x + mask_metadata.x_cord;
-    short image_cord_y = mask_cord_y + mask_metadata.y_cord;
-    short image_index = from_coordinates_to_index(image_cord_x, image_cord_y, image_width, image_height);
+    unsigned short image_cord_x = mask_cord_x + mask_metadata.x_cord;
+    unsigned short image_cord_y = mask_cord_y + mask_metadata.y_cord;
+    unsigned int image_index = from_coordinates_to_index(image_cord_x, image_cord_y, image_width, image_height);
 
     // if (!is_pixel_selected(mask_cord_x, mask_cord_y, image_cord_x, image_cord_y, image_width, image_height, 
     //                            mask_metadata))
@@ -210,15 +205,15 @@ __global__ void calculate_vertical_convolution_and_write_results(
     // TODO: Optimize the iteration so that the coordinates conversion applies only once
     //calculate the final blurred pixel value for the specific pixel (other pixels in this mask will be calculated by other threads in the grid)
     short filter_spread = (filter.size-1) / 2; // the number of pixels to consider around the center pixel
-    short r = 0;
-    short g = 0;
-    short b = 0;
+    unsigned short r = 0;
+    unsigned short g = 0;
+    unsigned short b = 0;
     for (short i = -filter_spread; i <= filter_spread; i++)
     {
         // not defining 'convolution_x' because this is a horizontal convolution, so the x coordinate is not modified
-        short convolution_y = clamp_out_of_bounds(image_cord_y + i, image_height);
-        short convolution_index = from_coordinates_to_index(image_cord_x, convolution_y, image_width, image_height);
-        short filter_coefficient = filter.coefficients[i + filter_spread];
+        unsigned short convolution_y = clamp_out_of_bounds(image_cord_y + i, image_height);
+        unsigned int convolution_index = from_coordinates_to_index(image_cord_x, convolution_y, image_width, image_height);
+        unsigned short filter_coefficient = filter.coefficients[i + filter_spread];
 
         r += partial_calculation_data_vector[convolution_index].r * filter_coefficient;
         g += partial_calculation_data_vector[convolution_index].g * filter_coefficient;
@@ -236,4 +231,5 @@ __global__ void calculate_vertical_convolution_and_write_results(
     output_image_data[image_index].r = (unsigned char)r;
     output_image_data[image_index].g = (unsigned char)g;
     output_image_data[image_index].b = (unsigned char)b;
+    printf("<kernel vertical convolution done>\n");
 }

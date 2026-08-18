@@ -2,18 +2,18 @@
 
 struct Device_mask_metaData
 {
-    short x_cord;
-    short y_cord;
-    short width;
-    short height;
+    unsigned short x_cord;
+    unsigned short y_cord;
+    unsigned short width;
+    unsigned short height;
 };
 
 struct Device_mask_collection
 {
     bool *mask_data_array;
     Device_mask_metaData *mask_metadata_array;
-    short *offsets;
-    short mask_count;
+    unsigned int *offsets;
+    unsigned short mask_count;
 };
 
 // struct buffer_pixel

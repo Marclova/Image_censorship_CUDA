@@ -12,10 +12,10 @@
 
 struct Mask_array_info
 {
-    short max_width;
-    short max_height;
-    short overall_data_size; // it needs to be stored aside because it's not homogeneously distributed through the various masks.
-    short mask_count;
+    unsigned short max_width;
+    unsigned short max_height;
+    unsigned int overall_data_size; // it needs to be stored aside because it's not homogeneously distributed through the various masks.
+    unsigned short mask_count;
 };
 
 
@@ -24,7 +24,7 @@ struct Mask_array_info
 /// @param mask_array The array of masks to get the information from.
 /// @param mask_count The number of masks in the provided array.
 /// @return The output struct to put the extracted info into.
-static Mask_array_info mask_array_info_extraction(const mask mask_array[], const short mask_count)
+static Mask_array_info mask_array_info_extraction(const mask mask_array[], unsigned short mask_count)
 {
     Mask_array_info array_info = {};
     // std::cout << "extracted info:" <<std::endl;
@@ -62,7 +62,7 @@ static Device_mask_collection device_mask_collection_init_and_alloc(const mask m
     Device_mask_collection d_mask_collection_to_return = {};
 
     bool *append_mask_data = (bool *)malloc(input_array_info.overall_data_size);
-    short *append_offsets = (short *)malloc(sizeof(short)*(input_array_info.mask_count+1));
+    unsigned int *append_offsets = (unsigned int *)malloc(sizeof(unsigned int)*(input_array_info.mask_count+1));
     append_offsets[0] = 0;
     Device_mask_metaData *append_metadata_array = (Device_mask_metaData *)malloc(sizeof(Device_mask_metaData)*input_array_info.mask_count);
     for (size_t i = 0; i < input_array_info.mask_count; i++)
@@ -73,8 +73,8 @@ static Device_mask_collection device_mask_collection_init_and_alloc(const mask m
         // std::cout << "     > Mask selected" << std::endl;
 
         // update the offsets
-        short current_offset = append_offsets[i];
-        short new_offset = append_offsets[i] + (selected_mask.width * selected_mask.height);
+        unsigned int current_offset = append_offsets[i];
+        unsigned int new_offset = append_offsets[i] + (selected_mask.width * selected_mask.height);
         append_offsets[i+1] = new_offset;
 
         // std::cout << "     > Offsets updated" << std::endl;
@@ -92,28 +92,28 @@ static Device_mask_collection device_mask_collection_init_and_alloc(const mask m
         // std::cout << "     > Metadata saved" << std::endl;
     }
     bool *d_mask_data_array;
-    short *d_offsets;
+    unsigned int *d_offsets;
     Device_mask_metaData *d_mask_metadata_array;
     cudaMalloc(&d_mask_data_array, input_array_info.overall_data_size);
-    cudaMalloc(&d_offsets, sizeof(short)*(input_array_info.mask_count+1));
+    cudaMalloc(&d_offsets, sizeof(unsigned int)*(input_array_info.mask_count+1));
     cudaMalloc(&d_mask_metadata_array, sizeof(Device_mask_metaData)*input_array_info.mask_count);
     // std::cout << "     > Device mask collection allocated" << std::endl;
     cudaMemcpy(d_mask_data_array, append_mask_data, input_array_info.overall_data_size, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_offsets, append_offsets, sizeof(short)*(input_array_info.mask_count+1), cudaMemcpyHostToDevice);
+    cudaMemcpy(d_offsets, append_offsets, sizeof(unsigned int)*(input_array_info.mask_count+1), cudaMemcpyHostToDevice);
     cudaMemcpy(d_mask_metadata_array, append_metadata_array, sizeof(Device_mask_metaData)*input_array_info.mask_count, 
                 cudaMemcpyHostToDevice);
 
-    std::cout << "Debug info: Check allocated mask data (before link with host): " << std::endl;
-    bool to_print[3];
-    cudaMemcpy(to_print, d_mask_data_array, sizeof(bool)*3, cudaMemcpyDeviceToHost);
-    std::cout << "     > mask data:[ " << to_print[0] << ", " << to_print[1] << ", " << to_print[2] << ", " "... ]" << std::endl;
+    // std::cout << "Debug info: Check allocated mask data (before link with host): " << std::endl;
+    // bool to_print[3];
+    // cudaMemcpy(to_print, d_mask_data_array, sizeof(bool)*3, cudaMemcpyDeviceToHost);
+    // std::cout << "     > mask data:[ " << to_print[0] << ", " << to_print[1] << ", " << to_print[2] << ", " "... ]" << std::endl;
 
     d_mask_collection_to_return.mask_count = input_array_info.mask_count;
     d_mask_collection_to_return.mask_data_array = d_mask_data_array;
     d_mask_collection_to_return.offsets = d_offsets;
     d_mask_collection_to_return.mask_metadata_array = d_mask_metadata_array;
 
-    std::cout << "     > mask count on device mask collection (host-side check): "; std:: cout << d_mask_collection_to_return.mask_count; std::cout << std::endl;
+    // std::cout << "     > mask count on device mask collection (host-side check): "; std:: cout << d_mask_collection_to_return.mask_count; std::cout << std::endl;
 
     free(append_mask_data);
     free(append_offsets);
@@ -123,11 +123,68 @@ static Device_mask_collection device_mask_collection_init_and_alloc(const mask m
 }
 
 
+// static void fix_masks_selection_area(const vector_picture input_image, mask mask_array[], unsigned short mask_count)
+// {
+//     // bool **append_selection_area = (bool **)malloc(input_image.width * sizeof(bool *));
+//     // for (size_t i = 0; i < input_image.width; i++) {
+//     //     append_selection_area[i] = (bool *)malloc(input_image.height * sizeof(bool));
+//     // }
 
-vector_picture blur_image(const vector_picture input_image, const mask mask_array[], const short mask_count, const vector_filter filter)
+//     for (size_t i = 0; i < mask_count; i++)
+//     {
+//         mask& selected_mask = mask_array[i];
+
+//         // out of border management
+//         if ((selected_mask.corner_coordinates[0] + selected_mask.width) > input_image.width) // check out of border
+//         {
+//             selected_mask.width = (input_image.width) - selected_mask.corner_coordinates[0]; // maximum value set
+//         }
+//         if ((selected_mask.corner_coordinates[1] + selected_mask.height) > input_image.height) // check out of border
+//         {
+//             selected_mask.height = (input_image.height) - selected_mask.corner_coordinates[1]; // maximum value set
+//         }
+
+//         // // multiple selection management // TODO: consider adding mask deletion and shrinking
+//         // for (size_t mask_x = 0; mask_x < selected_mask.width; mask_x++)
+//         // {
+//         //     for (size_t mask_y = 0; mask_y < selected_mask.height; mask_y++)
+//         //     {
+//         //         unsigned int mask_index = mask_y*selected_mask.width+selected_mask.height;
+//         //         if (!selected_mask.selection_vector[mask_index])
+//         //         {
+//         //             continue; // the pixel isw not selected
+//         //         }
+                
+//         //         unsigned short image_x = mask_x + selected_mask.corner_coordinates[0];
+//         //         unsigned short image_y = mask_y + selected_mask.corner_coordinates[1];
+//         //         if (append_selection_area[image_x][image_y])  // remove selection from mask wherever the selection has already been performed.
+//         //         {
+//         //             printf("selection pixel modified (%d,%d)\n", image_x, image_y);
+//         //             selected_mask.selection_vector[mask_index] = false; // the image pixel has already been selected for blurring; removing selection from this mask
+//         //         }
+//         //         else
+//         //         {
+//         //             append_selection_area[image_x][image_y] = true; // flag this image pixel as selected for blurring
+//         //         }
+//         //     }
+//         // }
+//     }
+
+//     // for (int x = 0; x < input_image.width; x++) {
+//     // free(append_selection_area[x]);
+//     // }
+//     // free(append_selection_area);
+// }
+
+
+
+vector_picture blur_image(const vector_picture input_image, const mask mask_array[], unsigned short mask_count, 
+                          const vector_filter filter)
 {
+    // fix_masks_selection_area(input_image, mask_array, mask_count);
+
     // definition of host variables
-    short image_size = sizeof(pixel)*(input_image.width*input_image.height);
+    unsigned int image_size = sizeof(pixel)*(input_image.width*input_image.height);
     Mask_array_info h_mask_array_info = mask_array_info_extraction(mask_array, mask_count);
     Device_mask_collection flattened_mask_data_collection = device_mask_collection_init_and_alloc(mask_array, h_mask_array_info);
 
@@ -150,25 +207,25 @@ vector_picture blur_image(const vector_picture input_image, const mask mask_arra
     pixel *d_input_image_data = {}; // 
     pixel *d_output_image_data = {}; // output is initialized as a copy of the input, to be modified by the kernel
     pixel *d_partial_calculation_vector = {}; // partial results append for filter application
-    short *d_filter_coefficients = {};
+    unsigned short *d_filter_coefficients = {};
 
-    std::cout << "Debug info: Allocation of device variables ..." << std::endl;
+    // std::cout << "Debug info: Allocation of device variables ..." << std::endl;
 
     // allocation and initialization of all defined variables
     cudaMalloc(&d_input_image_data, image_size);
     cudaMalloc(&d_output_image_data, image_size);
     cudaMalloc(&d_partial_calculation_vector, image_size);
-    cudaMalloc(&d_filter_coefficients, sizeof(short)*filter.size);
+    cudaMalloc(&d_filter_coefficients, sizeof(unsigned short)*filter.size);
     cudaMemcpy(d_input_image_data, input_image.data, image_size, cudaMemcpyHostToDevice);
     cudaMemcpy(d_output_image_data, input_image.data, image_size, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_filter_coefficients, filter.coefficients, sizeof(short)*filter.size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_filter_coefficients, filter.coefficients, sizeof(unsigned short)*filter.size, cudaMemcpyHostToDevice);
     
     // cudaMemcpy(d_partial_calculation_vector, input_image.data, image_size, cudaMemcpyHostToDevice);
 
     // proceeding to perform the kernel call
-    short block_size = 16; // optimum block size (16*16=256)
-    short grid_width = (h_mask_array_info.max_width + block_size-1) / block_size;
-    short grid_height = (h_mask_array_info.max_height + block_size-1) / block_size;
+    unsigned short block_size = 16; // optimum block size (16*16=256)
+    unsigned short grid_width = (h_mask_array_info.max_width + block_size-1) / block_size;
+    unsigned short grid_height = (h_mask_array_info.max_height + block_size-1) / block_size;
     dim3 block(block_size, block_size);
     dim3 grid(grid_width, grid_height, mask_count); // creating a grid(max_x,max_y) for each mask
     // printf("\nBefore kernel call: %s\n", cudaGetErrorString(cudaGetLastError()));
