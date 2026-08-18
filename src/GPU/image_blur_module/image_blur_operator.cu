@@ -19,17 +19,6 @@ static __device__ unsigned int from_coordinates_to_index(unsigned short const x,
 }
 
 
-// static __device__ bool* get_mask_data(Device_mask_collection const mask_collection, short const mask_index)
-// {
-//     short data_index_start = mask_collection.offsets[mask_index];
-//     short data_index_length = (mask_collection.offsets[mask_index+1] - data_index_start) -1;
-    
-//     bool *array_to_return;
-//     memcpy(&array_to_return, &mask_collection.mask_data_array[data_index_start], data_index_length * sizeof(bool));
-//     return array_to_return;
-// }
-
-
 static __device__ unsigned short clamp_out_of_bounds(unsigned short const coordinate, unsigned short const border_value)
 {
     if (coordinate >= border_value)
@@ -42,23 +31,9 @@ static __device__ unsigned short clamp_out_of_bounds(unsigned short const coordi
 
 static __device__ bool shall_thread_operate(Device_mask_collection const mask_collection)
 {
-    // // check if the mask exists
-    // if (blockIdx.z >= mask_collection.mask_count)
-    // {
-    //     return false;
-    // }
-    
     // check if the mask's covered area extends up to this block
     unsigned short mask_width = mask_collection.mask_metadata_array[blockIdx.z].width;
     unsigned short mask_height = mask_collection.mask_metadata_array[blockIdx.z].height;
-    // if (blockIdx.x >= ((mask_width + blockDim.x - 1) / blockDim.x))
-    // {
-    //     return false;
-    // }
-    // if (blockIdx.y >= ((mask_height + blockDim.y - 1) / blockDim.y))
-    // {
-    //     return false;
-    // }
 
     // Check if thread is within the mask's covered area
     if(blockIdx.x == (gridDim.x-1) &&                           // check if the block includes the edge of the area...
@@ -76,19 +51,8 @@ static __device__ bool shall_thread_operate(Device_mask_collection const mask_co
 }
 
 
-static __device__ bool is_pixel_selected(unsigned int const image_index, unsigned int const mask_index, 
-                                         unsigned short const image_width, unsigned short const image_height, 
-                                         const Device_mask_collection mask_collection)
-{
-    // if (image_index >= (image_width*image_height) || 
-    //     mask_index >= (mask_collection.mask_metadata_array[blockIdx.z].width*mask_collection.mask_metadata_array[blockIdx.z].height))
-    // {
-    //     return false;
-    // }
-    
-    //check if the pixel is selected for blurring
-    // printf("Mask pixel (%d) return: ", mask_index);
-    // printf("%s\n", (mask_collection.mask_data_array[mask_collection.offsets[blockIdx.z]+mask_index] ? "true" : "false"));
+static __device__ bool is_pixel_selected(unsigned int const mask_index, const Device_mask_collection mask_collection)
+{    
     return mask_collection.mask_data_array[mask_collection.offsets[blockIdx.z]+mask_index];
 }
 
@@ -105,23 +69,15 @@ static __device__ bool is_pixel_selected(unsigned int const image_index, unsigne
         // - A block corresponds to a partition of the area covered by the mask
         // - A thread corresponds to a pixel
 
-// TODO: try to remove all usage of matrix coordinates and use vector coordinates instead (deleting the 'from_coordinates_to_index' function would be the best result)
+
 __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data_vector, pixel const *input_image_data, 
                                                  unsigned short const image_width, unsigned short const image_height, 
                                                  Device_mask_collection const mask_collection, vector_filter const filter)
 {
-    // if (threadIdx.x == 0 && threadIdx.y == 0)
-    // {
-    //     printf("Thread (%u,%u) has been executed!\n", threadIdx.x, threadIdx.y);
-    // }
-
     if(!shall_thread_operate(mask_collection))
     {
         return;
     }
-
-    // printf("Extracted selection data: ");
-    // printf("[ %d, %d, %d, ... ]\n", mask_selection_vector[0], mask_selection_vector[1], mask_selection_vector[2]);
 
     Device_mask_metaData mask_metadata = mask_collection.mask_metadata_array[blockIdx.z];
     // Matrix coordinates are used despite the use of vector types due to implementation requirements for the binomial blur algorithm. 
@@ -135,16 +91,11 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
     unsigned short image_cord_y = mask_cord_y + mask_metadata.y_cord;
     unsigned int image_index = from_coordinates_to_index(image_cord_x, image_cord_y, image_width, image_height);
 
-    // if (!is_pixel_selected(mask_cord_x, mask_cord_y, image_cord_x, image_cord_y, image_width, image_height, 
-    //                            mask_metadata))
-    if (!is_pixel_selected(image_index, mask_index, image_width, image_height, mask_collection))
+    if (!is_pixel_selected(mask_index, mask_collection))
     {
         return;
     }
 
-    // printf("Thread (%u,%u) coordinates: image(%d,%d : %d), mask(%d,%d : %d)\n", threadIdx.x, threadIdx.y, image_cord_x, image_cord_y, image_index, mask_cord_x, mask_cord_y, mask_index);
-
-    // TODO: Optimize the iteration so that the coordinates conversion applies only once
     //calculate the partial results for a single pixel (other pixels in this mask will be calculated by other threads in the grid)
     short filter_spread = (filter.size-1) / 2; // the number of pixels to consider around the center pixel
     unsigned short r = 0;
@@ -169,11 +120,9 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
     partial_calculation_data_vector[image_index].g += (unsigned char)g;
     partial_calculation_data_vector[image_index].b += (unsigned char)b;
     // free(&mask_selection_vector);
-    printf("<kernel horizontal convolution done>\n");
 }
 
 
-//TODO: consider to use mask as raw data instead of passing it as a structure
 __global__ void calculate_vertical_convolution_and_write_results(pixel *output_image_data, pixel const *partial_calculation_data_vector,
                                                                  unsigned short const image_width, unsigned short const image_height, 
                                                                  Device_mask_collection const mask_collection, vector_filter const filter)
@@ -195,14 +144,11 @@ __global__ void calculate_vertical_convolution_and_write_results(pixel *output_i
     unsigned short image_cord_y = mask_cord_y + mask_metadata.y_cord;
     unsigned int image_index = from_coordinates_to_index(image_cord_x, image_cord_y, image_width, image_height);
 
-    // if (!is_pixel_selected(mask_cord_x, mask_cord_y, image_cord_x, image_cord_y, image_width, image_height, 
-    //                            mask_metadata))
-    if (!is_pixel_selected(image_index, mask_index, image_width, image_height, mask_collection))
+    if (!is_pixel_selected(mask_index, mask_collection))
     {
         return;
     }
 
-    // TODO: Optimize the iteration so that the coordinates conversion applies only once
     //calculate the final blurred pixel value for the specific pixel (other pixels in this mask will be calculated by other threads in the grid)
     short filter_spread = (filter.size-1) / 2; // the number of pixels to consider around the center pixel
     unsigned short r = 0;
@@ -218,11 +164,6 @@ __global__ void calculate_vertical_convolution_and_write_results(pixel *output_i
         r += partial_calculation_data_vector[convolution_index].r * filter_coefficient;
         g += partial_calculation_data_vector[convolution_index].g * filter_coefficient;
         b += partial_calculation_data_vector[convolution_index].b * filter_coefficient;
-
-        // if(image_cord_x == 4 && image_cord_y == 4)
-        // {
-            // printf("pixel (%d,%d) has been convoluted.\n", image_cord_x, image_cord_y);
-        // }
     }
     // After the division the values are supposed to be less than '256'
     r /= filter.divisor;
@@ -231,5 +172,4 @@ __global__ void calculate_vertical_convolution_and_write_results(pixel *output_i
     output_image_data[image_index].r = (unsigned char)r;
     output_image_data[image_index].g = (unsigned char)g;
     output_image_data[image_index].b = (unsigned char)b;
-    printf("<kernel vertical convolution done>\n");
 }
