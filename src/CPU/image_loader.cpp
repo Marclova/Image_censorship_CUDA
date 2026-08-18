@@ -52,7 +52,7 @@ vector_picture load_image(const char* filename)
  * Converte una vector_picture in un'immagine
  * e la salva e la passa a process_manager.cpp.
  */
-std::string save_image(const vector_picture& picture,
+bool save_image(const vector_picture& picture,
                 const char* filename)
 {
 
@@ -76,7 +76,7 @@ std::string save_image(const vector_picture& picture,
         }
     }
 
-    imwrite(filename, img);
+    return imwrite(filename, img);
 }
 
 

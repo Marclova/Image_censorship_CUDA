@@ -75,11 +75,12 @@ mask create_rectangle_mask()
     short height =
         static_cast<short>(std::abs(end_point.y-start_point.y));
 
-    mask m = create_mask(width,height);
+    mask m = create_mask(x,y,width,height);
 
-    m.corner_coordinates[0]=x;
-    m.corner_coordinates[1]=y;
+    // m.corner_coordinates[0]=x;
+    // m.corner_coordinates[1]=y;
 
+    //TODO: consider to put this pixel selection initialization directly into the 'create_mask' function
     for(short row=0;row<height;row++)
     {
         for(short col=0;col<width;col++)
@@ -334,11 +335,11 @@ void start_ui()
 
     // 6) Chiamata process_manager
 
-
-    std::string output_filename = blur_image_process(
-        input_image.c_str(),
-        masks.data(),
-        mask_number,
+    std::string output_filename = input_image + "_blurred";
+    blur_image_process(
+        input_image.c_str(), 
+        input_image.c_str(), 
+        masks, 
         filter_size
     );
 
