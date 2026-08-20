@@ -19,6 +19,35 @@
 #include "image_mask.h"
 #include "../CPU/process_manager.h"
 
+// private functions
+
+/// @brief Private function to split a string into substrings chopping the separator. The separator characters are removed from the result.
+/// @param string_to_split The string to split
+/// @param separator The character splitting the string (occurrences of the separator are removed)
+/// @return An vector of substrings
+static std::vector<std::string> split_with_divider(const std::string string_to_split, const char separator)
+{
+    const char *char_array = string_to_split.c_str();
+    std::vector<std::string> vector_to_return = {};
+    std::string append_string = "";
+    for (size_t i = 0; i < string_to_split.length(); i++)
+    {
+        char selected_char = char_array[i];
+        if(selected_char == separator && append_string.length() > 0)  // insert substring into the vector, if there's something to insert
+        {
+            vector_to_return.push_back(append_string);
+            append_string = "";
+        }
+        else  // or append character for later insertion
+        {
+            append_string.push_back(selected_char);
+        }
+    }
+    return vector_to_return;
+}
+
+
+
 //variabili globali
 
 static cv::Mat original_image;
@@ -159,10 +188,10 @@ void start_ui()
 
     // 1) Apertura immagine PNG
 
-    std::string input_image = open_png_dialog();
+    std::string input_image_path = open_png_dialog();
 
 
-    if(input_image.empty())
+    if(input_image_path.empty())
     {
         std::cout << "Nessuna immagine selezionata\n";
         return;
@@ -172,7 +201,7 @@ void start_ui()
 
     // 2) Caricamento immagine con OpenCV
 
-    original_image = cv::imread(input_image);
+    original_image = cv::imread(input_image_path);
 
 
     if(original_image.empty())
@@ -335,17 +364,20 @@ void start_ui()
 
     // 6) Chiamata process_manager
 
-    std::string output_filename = input_image + "_blurred";
+    std::cout << "input path: " << input_image_path << std::endl;
+    std::string output_image_path = split_with_divider(input_image_path, '.')[0] + "_blurred.png";  //modify name to avoid overwrite
+    std::cout << "output path: " << output_image_path << std::endl;
+    // std::string output_image_path = input_image_path;
     blur_image_process(
-        input_image.c_str(), 
-        input_image.c_str(), 
+        input_image_path.c_str(), 
+        output_image_path.c_str(), 
         masks, 
         filter_size
     );
 
 
 
-    cv::Mat result = cv::imread(output_filename);//visualizza il risultato
+    cv::Mat result = cv::imread(output_image_path);  //visualizza il risultato
 
 
 
