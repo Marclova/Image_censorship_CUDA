@@ -183,18 +183,16 @@ vector_picture blur_image(const vector_picture input_image, const mask mask_arra
     unsigned short grid_height = (h_mask_array_info.max_height + block_size-1) / block_size;
     dim3 block(block_size, block_size);
     dim3 grid(grid_width, grid_height, mask_count); // creating a grid(max_x,max_y) for each mask
+
     calculate_horizontal_convolution<<<grid, block>>>(d_partial_calculation_vector, d_input_image_data, 
                                                       input_image.width, input_image.height, 
                                                       flattened_mask_data_collection, 
                                                       vector_filter({d_filter_coefficients, filter.size, filter.divisor}));
-    
     cudaDeviceSynchronize();
-    
     calculate_vertical_convolution_and_write_results<<<grid, block>>>(d_output_image_data, d_partial_calculation_vector,
                                                                       input_image.width, input_image.height, 
                                                                       flattened_mask_data_collection, 
                                                                       vector_filter({d_filter_coefficients, filter.size, filter.divisor}));
-    
     cudaDeviceSynchronize(); //TODO: consider to remove this synchronization, 'cudaMemcpy' should do the synchronization implicitly
 
     pixel *h_output_image_data = (pixel *)malloc(image_size);

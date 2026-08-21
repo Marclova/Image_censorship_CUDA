@@ -11,7 +11,7 @@
 
 static __device__ unsigned int from_coordinates_to_index(unsigned short const x, unsigned short const y, 
                                                          unsigned short const matrix_width, unsigned short matrix_height)
-{    
+{
     assert(x < matrix_width);
     assert(y < matrix_height);
     
@@ -32,21 +32,15 @@ static __device__ unsigned short clamp_out_of_bounds(unsigned short const coordi
 static __device__ bool shall_thread_operate(Device_mask_collection const mask_collection)
 {
     // check if the mask's covered area extends up to this block
-    unsigned short mask_width = mask_collection.mask_metadata_array[blockIdx.z].width;
-    unsigned short mask_height = mask_collection.mask_metadata_array[blockIdx.z].height;
-
-    // Check if thread is within the mask's covered area
-    if(blockIdx.x == (gridDim.x-1) &&                           // check if the block includes the edge of the area...
-       threadIdx.x >= (mask_width - (gridDim.x-1)*blockDim.x))  // ... and if the specific thread exceeds the area.
+    if (mask_collection.mask_metadata_array[blockIdx.z].width <= threadIdx.x+(blockIdx.x*blockDim.x))
+    {
+        // printf("Thread rejected: block [%d,%d,%d], thread [%d,%d,%d]\n", blockIdx.x, blockIdx.y, blockIdx.z, threadIdx.x, threadIdx.y, threadIdx.z);
+        return false;
+    }
+    if (mask_collection.mask_metadata_array[blockIdx.z].height <= threadIdx.y+(blockIdx.y*blockDim.y))
     {
         return false;
     }
-    if(blockIdx.y == (gridDim.y-1) &&                           // check if the block includes the edge of the area...
-       threadIdx.y >= (mask_height - (gridDim.y-1)*blockDim.y))  // ... and if the specific thread exceeds the area.
-    {
-        return false;
-    }
-
     return true;
 }
 
@@ -119,7 +113,6 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
     partial_calculation_data_vector[image_index].r += (unsigned char)r;
     partial_calculation_data_vector[image_index].g += (unsigned char)g;
     partial_calculation_data_vector[image_index].b += (unsigned char)b;
-    // free(&mask_selection_vector);
 }
 
 
