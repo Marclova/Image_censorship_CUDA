@@ -326,13 +326,13 @@ void start_ui()
         << "\nScegli filtro:\n";
 
     std::cout
-        << "3 - leggero\n";
+        << "9 - leggero\n";
 
     std::cout
-        << "5 - medio\n";
+        << "13 - medio\n";
 
     std::cout
-        << "7 - forte\n";
+        << "21 - forte\n";
 
 
     std::cout
@@ -344,13 +344,13 @@ void start_ui()
 
 
 
-    while(filter_size!=3 &&
-          filter_size!=5 &&
-          filter_size!=7)
+    while(filter_size!=9 &&
+          filter_size!=13 &&
+          filter_size!=21)
     {
 
         std::cout
-            << "Inserisci 3, 5 oppure 7: ";
+            << "Inserisci 9, 13 oppure 21: ";
 
 
         std::cin

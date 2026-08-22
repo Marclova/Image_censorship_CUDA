@@ -92,15 +92,15 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
 
     //calculate the partial results for a single pixel (other pixels in this mask will be calculated by other threads in the grid)
     short filter_spread = (filter.size-1) / 2; // the number of pixels to consider around the center pixel
-    unsigned short r = 0;
-    unsigned short g = 0;
-    unsigned short b = 0;
+    unsigned int r = 0;
+    unsigned int g = 0;
+    unsigned int b = 0;
     for (short i = -filter_spread; i <= filter_spread; i++)
     {
         // not defining 'convolution_y' because this is a vertical convolution, so the y coordinate is not modified
         unsigned short convolution_x = clamp_out_of_bounds(image_cord_x + i, image_width);  // in the worst case scenario, the convolution will be the same for 'filter_spread+1' times, but trying to solve this with checks would worsen performance
         unsigned int convolution_index = from_coordinates_to_index(convolution_x, image_cord_y, image_width, image_height);
-        unsigned short filter_coefficient = filter.coefficients[i + filter_spread];
+        unsigned int filter_coefficient = filter.coefficients[i + filter_spread];
 
         r += input_image_data[convolution_index].r * filter_coefficient;
         g += input_image_data[convolution_index].g * filter_coefficient;
@@ -144,15 +144,15 @@ __global__ void calculate_vertical_convolution_and_write_results(pixel *output_i
 
     //calculate the final blurred pixel value for the specific pixel (other pixels in this mask will be calculated by other threads in the grid)
     short filter_spread = (filter.size-1) / 2; // the number of pixels to consider around the center pixel
-    unsigned short r = 0;
-    unsigned short g = 0;
-    unsigned short b = 0;
+    unsigned int r = 0;
+    unsigned int g = 0;
+    unsigned int b = 0;
     for (short i = -filter_spread; i <= filter_spread; i++)
     {
         // not defining 'convolution_x' because this is a horizontal convolution, so the x coordinate is not modified
         unsigned short convolution_y = clamp_out_of_bounds(image_cord_y + i, image_height);
         unsigned int convolution_index = from_coordinates_to_index(image_cord_x, convolution_y, image_width, image_height);
-        unsigned short filter_coefficient = filter.coefficients[i + filter_spread];
+        unsigned int filter_coefficient = filter.coefficients[i + filter_spread];
 
         r += partial_calculation_data_vector[convolution_index].r * filter_coefficient;
         g += partial_calculation_data_vector[convolution_index].g * filter_coefficient;

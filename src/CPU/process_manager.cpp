@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "process_manager.h"
@@ -39,22 +40,27 @@ vector_picture blur_image_process(
 
     switch(filter_size)
     {
-    case 3:
+    case 9:
 
-        filter = filter_1x3;
+        filter = filter_9;
         break;
 
 
-    case 5:
+    case 13:
 
-        filter = filter_1x5;
+        filter = filter_13;
         break;
 
 
+    case 21:
+
+        filter = filter_21;
+        break;
+    
     default:
-
-        filter = filter_1x7;
-        break;
+        throw std::invalid_argument(
+                "Unsupported filter size: " + std::to_string(filter_size)
+        );
     }
 
     std::cout << "2. Filtro scelto\n";

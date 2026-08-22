@@ -165,17 +165,17 @@ vector_picture blur_image(const vector_picture input_image, const mask mask_arra
     pixel *d_input_image_data = {}; // 
     pixel *d_output_image_data = {}; // output is initialized as a copy of the input, to be modified by the kernel
     pixel *d_partial_calculation_vector = {}; // partial results append for filter application
-    unsigned short *d_filter_coefficients = {};
+    unsigned int *d_filter_coefficients = {};
 
     // allocation and initialization of all defined variables
     cudaMalloc(&d_input_image_data, image_size);
     cudaMalloc(&d_output_image_data, image_size);
     cudaMalloc(&d_partial_calculation_vector, image_size);
-    cudaMalloc(&d_filter_coefficients, sizeof(unsigned short)*filter.size);
+    cudaMalloc(&d_filter_coefficients, sizeof(unsigned int)*filter.size);
 
     cudaMemcpy(d_input_image_data, input_image.data, image_size, cudaMemcpyHostToDevice);
     cudaMemcpy(d_output_image_data, input_image.data, image_size, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_filter_coefficients, filter.coefficients, sizeof(unsigned short)*filter.size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_filter_coefficients, filter.coefficients, sizeof(unsigned int)*filter.size, cudaMemcpyHostToDevice);
 
     // proceeding to perform the kernel call
     unsigned short block_size = 16; // optimum block size (16*16=256)
