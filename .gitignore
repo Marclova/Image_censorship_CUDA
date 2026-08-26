@@ -2,8 +2,12 @@
 /External Libraries
 /Scratches and Consoles
 /Out
-/src/images
+/bin
+/testing
 *.obj
 *.pdb
 *.exe
 *.dll
+*.ninja
+*.ninja_log
+*.ninja_deps
