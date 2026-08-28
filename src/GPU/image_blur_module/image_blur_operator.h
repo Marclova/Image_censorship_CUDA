@@ -1,5 +1,5 @@
 #include "src/data_models/graphics.h"
-#include "src/GPU/kernel_data_models.h"
+#include "src/data_models/kernel_data_models.h"
 
 
 
