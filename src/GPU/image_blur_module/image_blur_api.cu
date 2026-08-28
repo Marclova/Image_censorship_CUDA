@@ -188,11 +188,22 @@ vector_picture blur_image(const vector_picture input_image, const mask mask_arra
                                                       input_image.width, input_image.height, 
                                                       flattened_mask_data_collection, 
                                                       vector_filter({d_filter_coefficients, filter.size, filter.divisor}));
+    // calculate_convolution<<<grid, block>>>(d_partial_calculation_vector, d_input_image_data, 
+    //                                                   input_image.width, input_image.height, 
+    //                                                   flattened_mask_data_collection, 
+    //                                                   vector_filter({d_filter_coefficients, filter.size, filter.divisor}),
+    //                                                   HORIZONTAL_CONVOLUTION);
     cudaDeviceSynchronize();
+    printf("Debug info: CUDA mid-execution error state = {%s}\n", cudaGetErrorString(cudaGetLastError()));
     calculate_vertical_convolution_and_write_results<<<grid, block>>>(d_output_image_data, d_partial_calculation_vector,
                                                                       input_image.width, input_image.height, 
                                                                       flattened_mask_data_collection, 
                                                                       vector_filter({d_filter_coefficients, filter.size, filter.divisor}));
+    // calculate_convolution<<<grid, block>>>(d_output_image_data, d_partial_calculation_vector,
+    //                                                                   input_image.width, input_image.height, 
+    //                                                                   flattened_mask_data_collection, 
+    //                                                                   vector_filter({d_filter_coefficients, filter.size, filter.divisor}),
+    //                                                                   VERTICAL_CONVOLUTION);
     cudaDeviceSynchronize(); //TODO: consider to remove this synchronization, 'cudaMemcpy' should do the synchronization implicitly
 
     pixel *h_output_image_data = (pixel *)malloc(image_size);

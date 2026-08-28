@@ -10,3 +10,8 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
 __global__ void calculate_vertical_convolution_and_write_results(pixel *output_image_data, pixel const *partial_calculation_data_vector,
                                                                  unsigned short const image_width, unsigned short const image_height, 
                                                                  Device_mask_collection const mask_collection, vector_filter const filter);
+
+// __global__ void calculate_convolution(pixel *output_image_data, pixel const *input_image_data, 
+//                                       unsigned short const image_width, unsigned short const image_height, 
+//                                       Device_mask_collection const mask_collection, vector_filter const filter, 
+//                                       Convolution_orientation const orientation);

@@ -16,9 +16,7 @@ struct Device_mask_collection
     unsigned short mask_count;
 };
 
-// struct buffer_pixel
-// {
-//     short r;
-//     short g;
-//     short b;   
+// enum Convolution_orientation{
+//     HORIZONTAL_CONVOLUTION = 0,
+//     VERTICAL_CONVOLUTION = 1
 // };
