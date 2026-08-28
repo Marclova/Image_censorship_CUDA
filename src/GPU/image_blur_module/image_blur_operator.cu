@@ -107,9 +107,9 @@ __global__ void calculate_horizontal_convolution(pixel *partial_calculation_data
         b += input_image_data[convolution_index].b * filter_coefficient;
     }
     // After the division the values are supposed to be less than '256'
-    r /= filter.divisor;
-    g /= filter.divisor;
-    b /= filter.divisor;
+    r >>= filter.size - 1;
+    g >>= filter.size - 1;
+    b >>= filter.size - 1;
     partial_calculation_data_vector[image_index].r += (unsigned char)r;
     partial_calculation_data_vector[image_index].g += (unsigned char)g;
     partial_calculation_data_vector[image_index].b += (unsigned char)b;
@@ -159,9 +159,9 @@ __global__ void calculate_vertical_convolution_and_write_results(pixel *output_i
         b += partial_calculation_data_vector[convolution_index].b * filter_coefficient;
     }
     // After the division the values are supposed to be less than '256'
-    r /= filter.divisor;
-    g /= filter.divisor;
-    b /= filter.divisor;
+    r >>= filter.size - 1;
+    g >>= filter.size - 1;
+    b >>= filter.size - 1;
     output_image_data[image_index].r = (unsigned char)r;
     output_image_data[image_index].g = (unsigned char)g;
     output_image_data[image_index].b = (unsigned char)b;

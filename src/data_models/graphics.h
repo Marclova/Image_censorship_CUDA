@@ -41,8 +41,4 @@ struct vector_filter
 {
     unsigned int* coefficients; // assigned with new short[size]
     unsigned short size;
-    unsigned int divisor;
-
-    // vector_filter(short* coefficient, short size, short divisor) 
-    //     : coefficients(coefficient), size(size), divisor(divisor) {}
 };

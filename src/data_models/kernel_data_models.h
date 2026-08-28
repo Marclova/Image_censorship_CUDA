@@ -15,10 +15,3 @@ struct Device_mask_collection
     unsigned int *offsets;
     unsigned short mask_count;
 };
-
-// struct buffer_pixel
-// {
-//     short r;
-//     short g;
-//     short b;   
-// };
