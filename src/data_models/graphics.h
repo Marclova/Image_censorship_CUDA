@@ -39,9 +39,9 @@ struct mask
 // The divisor field is used to normalize the filter output
 struct vector_filter
 {
-    unsigned short* coefficients; // assigned with new short[size]
+    unsigned int* coefficients; // assigned with new short[size]
     unsigned short size;
-    unsigned short divisor;
+    unsigned int divisor;
 
     // vector_filter(short* coefficient, short size, short divisor) 
     //     : coefficients(coefficient), size(size), divisor(divisor) {}

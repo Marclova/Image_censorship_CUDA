@@ -1,7 +1,7 @@
 #include "image_loader.h"
 
 #include <opencv2/opencv.hpp>
-#include <stdexcept>
+
 
 using namespace cv;
 using namespace std;
@@ -50,9 +50,9 @@ vector_picture load_image(const char* filename)
 
 /*
  * Converte una vector_picture in un'immagine
- * e la salva sul disco.
+ * e la salva e la passa a process_manager.cpp.
  */
-void save_image(const vector_picture& picture,
+bool save_image(const vector_picture& picture,
                 const char* filename)
 {
 
@@ -76,7 +76,7 @@ void save_image(const vector_picture& picture,
         }
     }
 
-    imwrite(filename, img);
+    return imwrite(filename, img);
 }
 
 

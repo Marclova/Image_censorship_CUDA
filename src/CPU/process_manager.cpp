@@ -1,8 +1,9 @@
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 #include "process_manager.h"
-
+#include <iostream>
 
 #include "image_loader.h"
 
@@ -24,10 +25,11 @@ vector_picture blur_image_process(
     /*
         1) Carica immagine
     */
+    std::cout << "1. Carico immagine\n";
 
     vector_picture input_image_vector = load_image(input_image_path);
 
-
+    std::cout << "1. Immagine caricata\n";
 
     /*
         2) Scelta filtro
@@ -38,25 +40,30 @@ vector_picture blur_image_process(
 
     switch(filter_size)
     {
-    case 3:
+    case 9:
 
-        filter = filter_1x3;
+        filter = filter_9;
         break;
 
 
-    case 5:
+    case 13:
 
-        filter = filter_1x5;
+        filter = filter_13;
         break;
 
 
+    case 21:
+
+        filter = filter_21;
+        break;
+    
     default:
-
-        filter = filter_1x7;
-        break;
+        throw std::invalid_argument(
+                "Unsupported filter size: " + std::to_string(filter_size)
+        );
     }
 
-
+    std::cout << "2. Filtro scelto\n";
 
     /*
         3) Invio alla GPU
@@ -68,6 +75,8 @@ vector_picture blur_image_process(
         - filtro
     */
 
+    std::cout << "3. Prima di blur_image\n";
+
     vector_picture output_image_vector =
             blur_image(
                     input_image_vector,
@@ -76,7 +85,7 @@ vector_picture blur_image_process(
                     filter
             );
 
-
+    std::cout << "4. Dopo blur_image\n";
 
     /*
         4) Salvataggio
@@ -94,8 +103,10 @@ vector_picture blur_image_process(
 
     /*
         5) Pulizia memoria
+
+        Cancellero dai commenti appena si sistemerà la parte blur_image()
     */
     // destroy_image(input_image_vector);
 
-    // destroy_image(output_image_vector);
+    // destroy_image(output); //l'output per il momento è uguale all'immagine originale quindi puntano alla stessa locazione di memoria
 }
