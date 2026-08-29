@@ -80,7 +80,7 @@ vector_picture blur_image_process(
     vector_picture output_image_vector =
             blur_image(
                     input_image_vector,
-                    mask_vector.data(),
+                    const_cast<mask*>(mask_vector.data()),
                     mask_vector.size(),
                     filter
             );

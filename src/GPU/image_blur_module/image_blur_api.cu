@@ -99,63 +99,61 @@ static Device_mask_collection device_mask_collection_init_and_alloc(const mask m
 }
 
 
-// static void fix_masks_selection_area(const vector_picture input_image, mask mask_array[], unsigned short mask_count)
-// {
-//     // bool **append_selection_area = (bool **)malloc(input_image.width * sizeof(bool *));
-//     // for (size_t i = 0; i < input_image.width; i++) {
-//     //     append_selection_area[i] = (bool *)malloc(input_image.height * sizeof(bool));
-//     // }
+static void fix_masks_overlapping(mask mask_array[], unsigned short mask_count, const vector_picture input_image)
+{
+    bool **append_selection_area = (bool **)malloc(input_image.width * sizeof(bool *));
+    for (size_t i = 0; i < input_image.width; i++) {
+        append_selection_area[i] = (bool *)malloc(input_image.height * sizeof(bool));
+    }
 
-//     for (size_t i = 0; i < mask_count; i++)
-//     {
-//         mask& selected_mask = mask_array[i];
-
-//         // out of border management
-//         if ((selected_mask.corner_coordinates[0] + selected_mask.width) > input_image.width) // check out of border
-//         {
-//             selected_mask.width = (input_image.width) - selected_mask.corner_coordinates[0]; // maximum value set
-//         }
-//         if ((selected_mask.corner_coordinates[1] + selected_mask.height) > input_image.height) // check out of border
-//         {
-//             selected_mask.height = (input_image.height) - selected_mask.corner_coordinates[1]; // maximum value set
-//         }
-
-//         // // multiple selection management // T0D0: consider adding mask deletion and shrinking
-//         // for (size_t mask_x = 0; mask_x < selected_mask.width; mask_x++)
-//         // {
-//         //     for (size_t mask_y = 0; mask_y < selected_mask.height; mask_y++)
-//         //     {
-//         //         unsigned int mask_index = mask_y*selected_mask.width+selected_mask.height;
-//         //         if (!selected_mask.selection_vector[mask_index])
-//         //         {
-//         //             continue; // the pixel isw not selected
-//         //         }
+    for (size_t i = 0; i < mask_count; i++)
+    {
+        mask selected_mask = mask_array[i];
+        // multiple selection management // T0D0: consider adding mask deletion and shrinking
+        for (size_t mask_x = 0; mask_x < selected_mask.width; mask_x++)
+        {
+            for (size_t mask_y = 0; mask_y < selected_mask.height; mask_y++)
+            {
+                unsigned int mask_index = mask_y*selected_mask.width+mask_x;
+                if (!selected_mask.selection_vector[mask_index])
+                {
+                    continue; // the pixel is not selected
+                }
                 
-//         //         unsigned short image_x = mask_x + selected_mask.corner_coordinates[0];
-//         //         unsigned short image_y = mask_y + selected_mask.corner_coordinates[1];
-//         //         if (append_selection_area[image_x][image_y])  // remove selection from mask wherever the selection has already been performed.
-//         //         {
-//         //             selected_mask.selection_vector[mask_index] = false; // the image pixel has already been selected for blurring; removing selection from this mask
-//         //         }
-//         //         else
-//         //         {
-//         //             append_selection_area[image_x][image_y] = true; // flag this image pixel as selected for blurring
-//         //         }
-//         //     }
-//         // }
-//     }
+                unsigned short image_x = mask_x + selected_mask.corner_coordinates[0];
+                unsigned short image_y = mask_y + selected_mask.corner_coordinates[1];
+                if (append_selection_area[image_x][image_y])  // remove selection from mask wherever the selection has already been performed.
+                {
+                    selected_mask.selection_vector[mask_index] = false; // the image pixel has already been selected for blurring; removing selection from this mask
+                }
+                else
+                {
+                    try
+                    {
+                        append_selection_area[image_x][image_y] = true; // flag this image pixel as selected for blurring
+                    }
+                    catch (const std::exception& e)
+                    {
+                        std::cerr << "Error: " << e.what() << std::endl;
+                    }
+                }
+            }
+        }
+    }
 
-//     // for (int x = 0; x < input_image.width; x++) {
-//     // free(append_selection_area[x]);
-//     // }
-//     // free(append_selection_area);
-// }
+    for (int x = 0; x < input_image.width; x++) {
+    free(append_selection_area[x]);
+    }
+    free(append_selection_area);
+}
 
 
 
-vector_picture blur_image(const vector_picture input_image, const mask mask_array[], unsigned short mask_count, 
+vector_picture blur_image(const vector_picture input_image, mask mask_array[], unsigned short mask_count, 
                           const vector_filter filter)
 {
+    fix_masks_overlapping(mask_array, mask_count, input_image);    
+
     // definition of host variables
     unsigned int image_size = sizeof(pixel)*(input_image.width*input_image.height);
     Mask_array_info h_mask_array_info = mask_array_info_extraction(mask_array, mask_count);
