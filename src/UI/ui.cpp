@@ -48,8 +48,7 @@ static std::vector<std::string> split_with_divider(const std::string string_to_s
 
 
 
-//variabili globali
-
+//global variables
 static cv::Mat original_image;
 static cv::Mat displayed_image;
 
@@ -59,55 +58,42 @@ static cv::Point start_point;
 static cv::Point end_point;
 
 
- //Aprire il file PNG
+ //Opening the png file
 std::string open_png_dialog()
 {
     char filename[MAX_PATH] = "";
-
     OPENFILENAMEA ofn;
-
     ZeroMemory(&ofn, sizeof(ofn));
 
     ofn.lStructSize = sizeof(ofn);
-
     ofn.lpstrFile = filename;
-
     ofn.nMaxFile = MAX_PATH;
-
     ofn.lpstrFilter =
         "PNG Images (*.png)\0*.png\0";
-
     ofn.nFilterIndex = 1;
-
     ofn.Flags =
         OFN_PATHMUSTEXIST |
         OFN_FILEMUSTEXIST;
 
     if(GetOpenFileNameA(&ofn))
         return filename;
-
     return "";
 }
 
-//Creazione delle MASK
+
+//Creation of MASKS
 mask create_rectangle_mask()
 {
     short x =
         static_cast<short>(std::min(start_point.x,end_point.x));
-
     short y =
         static_cast<short>(std::min(start_point.y,end_point.y));
-
     short width =
         static_cast<short>(std::abs(end_point.x-start_point.x));
-
     short height =
         static_cast<short>(std::abs(end_point.y-start_point.y));
 
     mask m = create_mask(x,y,width,height);
-
-    // m.corner_coordinates[0]=x;
-    // m.corner_coordinates[1]=y;
 
     //TODO: consider to put this pixel selection initialization directly into the 'create_mask' function
     for(short row=0;row<height;row++)
@@ -117,38 +103,23 @@ mask create_rectangle_mask()
             set_mask_pixel(m,col,row,true);
         }
     }
-
     return m;
 }
 
-//Quando l'utente clicca, trascina o rilascia il mouse sopra la finestra dell'immagine, esegui questo codice.
-//Un evento del mouse
 
-void mouse_callback(
-    int event,
-    int x,
-    int y,
-    int,
-    void*
-)
+// When the user clicks, drags, or releases the mouse over the image window, execute this code (mouse event).
+void mouse_callback(int event, int x, int y, int, void*)
 {
-
     if(event==cv::EVENT_LBUTTONDOWN)
     {
         drawing=true;
-
         start_point=cv::Point(x,y);
-
         end_point=start_point;
     }
-
     else if(event==cv::EVENT_MOUSEMOVE && drawing)
     {
-
         end_point=cv::Point(x,y);
-
         displayed_image=original_image.clone();
-
         cv::rectangle(
             displayed_image,
             start_point,
@@ -156,18 +127,13 @@ void mouse_callback(
             cv::Scalar(0,255,0),
             2
         );
-
         cv::imshow("Image",displayed_image);
     }
-
     else if(event==cv::EVENT_LBUTTONUP)
     {
         drawing=false;
-
         end_point=cv::Point(x,y);
-
         displayed_image=original_image.clone();
-
         cv::rectangle(
             displayed_image,
             start_point,
@@ -175,199 +141,122 @@ void mouse_callback(
             cv::Scalar(0,255,0),
             2
         );
-
         cv::imshow("Image",displayed_image);
     }
-
 }
 
 
 void start_ui()
 {
-
-
-    // 1) Apertura immagine PNG
-
+    // 1) PNG image selection
     std::string input_image_path = open_png_dialog();
-
 
     if(input_image_path.empty())
     {
-        std::cout << "Nessuna immagine selezionata\n";
+        std::cout << "No image selected\n";
         return;
     }
 
-
-
-    // 2) Caricamento immagine con OpenCV
-
+    // 2) Image loading with OpenCV
     original_image = cv::imread(input_image_path);
-
 
     if(original_image.empty())
     {
-        std::cout << "Errore caricamento immagine\n";
+        std::cout << "Error loading image\n";
         return;
     }
-
 
     displayed_image = original_image.clone();
     cv::namedWindow("Image", cv::WINDOW_NORMAL);
     cv::resizeWindow("Image", 900, 600);
-
     cv::setMouseCallback("Image", mouse_callback);
-
     cv::imshow("Image", displayed_image);
-
-
     cv::waitKey(100);
 
-
-
-    // 3) Numero di mask richieste dall'utente
-
+    // 3) Number of masks requested by the user
     short mask_number;
-
-
-    std::cout
-        << "Quante mask vuoi creare? ";
-
-
-    std::cin
-        >> mask_number;
-
-
-
-    while(mask_number <= 0)
+    do
     {
         std::cout
-            << "Numero non valido. Inserisci ancora: ";
-
+            << "How many masks do you want to create? ";
         std::cin
             >> mask_number;
+
+        if(mask_number <= 0)
+        {
+            std::cout
+                << "Invalid number. Please enter again\n";
+        }
     }
+    while(mask_number <= 0);
 
-
-
-
-    // 4) Creazione delle mask
-
+    // 4) Masks creation
     std::vector<mask> masks;
-
-
     for(short i=0; i<mask_number; i++)
     {
-
         std::cout
-            << "\nDisegna la mask "
+            << "\nDraw mask "
             << i+1
             << "\n";
 
-
         std::cout
-            << "Premi INVIO quando hai finito\n";
+            << "Press ENTER when you are done\n";
 
-
-        // reset selezione precedente
-
+        // reset of previous selection
         start_point=cv::Point(0,0);
-
         end_point=cv::Point(0,0);
-
-
-
         cv::imshow(
             "Image",
             original_image
         );
 
-
-        /*
-            Aspetta che l'utente disegni
-            con il mouse
-
-            qualsiasi tasto continua
-        */
-
-        cv::waitKey(0);
-
-
-
+        cv::waitKey(0); // Wait for the user to draw with the mouse and press ENTER to continue
         mask new_mask =
             create_rectangle_mask();
-
-
-
         masks.push_back(new_mask);
 
-
-
         std::cout
-            << "Mask creata: "
+            << "Mask created: "
             << new_mask.width
             << " x "
             << new_mask.height
             << "\n";
-
     }
 
-
-
-
-
-    // 5) Scelta filtro
-
-
+    // 5) Filter selection
     short filter_size;
 
-
+    std::cout
+        << "\nChoose filter:\n";
+    std::cout
+        << "9 - light\n";
+    std::cout
+        << "13 - medium\n";
+    std::cout
+        << "21 - strong\n";
 
     std::cout
-        << "\nScegli filtro:\n";
-
-    std::cout
-        << "9 - leggero\n";
-
-    std::cout
-        << "13 - medio\n";
-
-    std::cout
-        << "21 - forte\n";
-
-
-    std::cout
-        << "Scelta: ";
-
-
+        << "Choice: ";
     std::cin
         >> filter_size;
-
-
 
     while(filter_size!=9 &&
           filter_size!=13 &&
           filter_size!=21)
     {
-
         std::cout
-            << "Inserisci 9, 13 oppure 21: ";
-
-
+            << "Enter 9, 13 or 21: ";
         std::cin
             >> filter_size;
-
     }
 
-//chiudo la finestra image
+    cv::destroyWindow("Image"); // Closing the image window before processing
 
-    cv::destroyWindow("Image");
-
-    // 6) Chiamata process_manager
-
+    // 6) Call to process_manager
     std::cout << "input path: " << input_image_path << std::endl;
     std::string output_image_path = split_with_divider(input_image_path, '.')[0] + "_blurred.png";  //modify name to avoid overwrite
     std::cout << "output path: " << output_image_path << std::endl;
-    // std::string output_image_path = input_image_path;
+    
     blur_image_process(
         input_image_path.c_str(), 
         output_image_path.c_str(), 
@@ -375,22 +264,14 @@ void start_ui()
         filter_size
     );
 
-
-
-    cv::Mat result = cv::imread(output_image_path);  //visualizza il risultato
-
-
-
+    cv::Mat result = cv::imread(output_image_path);  //visualize result image
 
     if(result.empty())
     {
         std::cout
-            << "Errore apertura risultato\n";
-
+            << "Error opening result\n";
         return;
     }
-
-
 
     cv::namedWindow("Result", cv::WINDOW_NORMAL);
     cv::resizeWindow("Result", 900, 600);

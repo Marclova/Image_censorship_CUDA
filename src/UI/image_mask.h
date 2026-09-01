@@ -4,21 +4,20 @@
 
 #ifndef PARALLEL_IMAGE_MASK_H
 #define PARALLEL_IMAGE_MASK_H
-
 #endif //PARALLEL_IMAGE_MASK_H
 
 #pragma once
 
 #include "../data_models/graphics.h"
 
-// Crea una maschera vuota
+// Create a new empty mask
 mask create_mask(short absolute_x, short absolute_y, short width, short height);
 
-// Libera la memoria occupata dalla maschera
+// Free the memory occupied by the mask
 void destroy_mask(mask& m);
 
-// Modifica un pixel della maschera
+// Modify a pixel of the mask
 void set_mask_pixel(mask& m, short x, short y, bool value);
 
-// Controlla se un pixel è selezionato
+// Check if a pixel is selected
 bool get_mask_pixel(const mask& m, short x, short y);

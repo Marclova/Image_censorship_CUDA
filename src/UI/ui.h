@@ -4,7 +4,6 @@
 
 #ifndef IMAGE_CENSORSHIP_CUDA_UI_H
 #define IMAGE_CENSORSHIP_CUDA_UI_H
-
 #endif //IMAGE_CENSORSHIP_CUDA_UI_H
 
 #pragma once
