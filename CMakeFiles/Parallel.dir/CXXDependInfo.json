@@ -1,30 +1,51 @@
 {
 	"bmi-installation" : null,
-	"compiler-frontend-variant" : "GNU",
-	"compiler-id" : "GNU",
+	"compiler-frontend-variant" : "MSVC",
+	"compiler-id" : "MSVC",
 	"compiler-simulate-id" : "",
 	"config" : "Debug",
 	"cxx-modules" : {},
 	"database-info" : null,
-	"dir-cur-bld" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel",
-	"dir-cur-src" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel",
-	"dir-top-bld" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel",
-	"dir-top-src" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel",
+	"dir-cur-bld" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA",
+	"dir-cur-src" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA",
+	"dir-top-bld" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA",
+	"dir-top-src" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA",
 	"exports" : [],
 	"forward-modules-from-target-dirs" : [],
 	"include-dirs" : 
 	[
+		"src",
 		"C:\\Users\\abiga\\Desktop\\vcpkg\\installed\\x64-windows\\include\\opencv4"
 	],
 	"language" : "CXX",
 	"linked-target-dirs" : [],
-	"module-dir" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/CMakeFiles/Parallel.dir",
+	"module-dir" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA/CMakeFiles/Parallel.dir",
 	"sources" : 
 	{
+		"CMakeFiles/Parallel.dir/src/CPU/image_loader.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA/src/CPU/image_loader.cpp"
+		},
+		"CMakeFiles/Parallel.dir/src/CPU/process_manager.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA/src/CPU/process_manager.cpp"
+		},
+		"CMakeFiles/Parallel.dir/src/UI/image_mask.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA/src/UI/image_mask.cpp"
+		},
 		"CMakeFiles/Parallel.dir/src/main.cpp.obj" : 
 		{
 			"language" : "CXX",
-			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Parallel/src/main.cpp"
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA/src/main.cpp"
+		},
+		"CMakeFiles/Parallel.dir/src/testmain.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/abiga/OneDrive/Desktop/Magistrale/Image_censorship_CUDA/src/testmain.cpp"
 		}
 	}
 }

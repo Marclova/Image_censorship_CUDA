@@ -1,5 +1,13 @@
 /.idea
 /External Libraries
 /Scratches and Consoles
-/.vscode
 /Out
+/bin
+/testing
+*.obj
+*.pdb
+*.exe
+*.dll
+*.ninja
+*.ninja_log
+*.ninja_deps

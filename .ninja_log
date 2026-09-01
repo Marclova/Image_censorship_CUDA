@@ -1,7 +1,0 @@
-# ninja log v7
-10	1326	8002967331960028	CMakeFiles/Parallel.dir/main.cpp.obj.ddi	b46ecd60bbb3e6d
-1327	1440	8002967346103848	CMakeFiles/Parallel.dir/CXX.dd	beb05814793efcb7
-1327	1440	8002967346103848	CMakeFiles/Parallel.dir/CXXModules.json	beb05814793efcb7
-1327	1440	8002967346103848	CMakeFiles/Parallel.dir/main.cpp.obj.modmap	beb05814793efcb7
-1457	7765	8002967346433860	CMakeFiles/Parallel.dir/main.cpp.obj	5d527a9ec5464651
-7775	10108	8002967409603753	Parallel.exe	344a83a32ef37bb8

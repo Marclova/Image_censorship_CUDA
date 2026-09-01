@@ -1,9 +1,8 @@
-#include <opencv2/opencv.hpp>
-#include <iostream>
+#include "UI/ui.h"
 
-int main() {
-
-    std::cout << "OpenCV funziona!" << std::endl;
+int main()
+{
+    start_ui();
 
     return 0;
 }
