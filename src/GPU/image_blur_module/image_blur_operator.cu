@@ -8,7 +8,12 @@
 
 
 
-
+/// @brief Converts 2D coordinates to a 1D index.
+/// @param x The x-coordinate.
+/// @param y The y-coordinate.
+/// @param matrix_width The width of the matrix.
+/// @param matrix_height The height of the matrix.
+/// @return The 1D index corresponding to the 2D coordinates.
 static __device__ unsigned int from_coordinates_to_index(unsigned short const x, unsigned short const y, 
                                                          unsigned short const matrix_width, unsigned short matrix_height)
 {
@@ -19,6 +24,10 @@ static __device__ unsigned int from_coordinates_to_index(unsigned short const x,
 }
 
 
+/// @brief Clamps a single 2D coordinate to the bounds of the given matrix dimension.
+/// @param coordinate The coordinate to be clamped.
+/// @param border_value The maximum value for the coordinate (exclusive).
+/// @return The clamped coordinate.
 static __device__ unsigned short clamp_out_of_bounds(unsigned short const coordinate, unsigned short const border_value)
 {
     if (coordinate >= border_value)
@@ -29,6 +38,9 @@ static __device__ unsigned short clamp_out_of_bounds(unsigned short const coordi
 }
 
 
+/// @brief Determines whether a thread should operate based on its position relative to the mask's covered area.
+/// @param mask_collection The collection of masks to be applied.
+/// @return True if the thread should operate, false otherwise.
 static __device__ bool shall_thread_operate(Device_mask_collection const mask_collection)
 {
     // check if the mask's covered area extends up to this block
@@ -45,6 +57,10 @@ static __device__ bool shall_thread_operate(Device_mask_collection const mask_co
 }
 
 
+/// @brief Determines if a pixel is selected based on its index and the operating mask's data.
+/// @param mask_index The index of the mask.
+/// @param mask_collection The collection of masks from which the mask data is retrieved using the block 'z' index.
+/// @return True if the pixel is selected, false otherwise.
 static __device__ bool is_pixel_selected(unsigned int const mask_index, const Device_mask_collection mask_collection)
 {    
     return mask_collection.mask_data_array[mask_collection.offsets[blockIdx.z]+mask_index];

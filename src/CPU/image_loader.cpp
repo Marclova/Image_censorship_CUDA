@@ -8,8 +8,8 @@ using namespace std;
 
 
 /*
- * Carica un'immagine dal disco e la converte
- * nella struttura vector_picture.
+ * Loads an image from disk and converts it
+ * to the vector_picture structure.
  */
 vector_picture load_image(const char* filename)
 {
@@ -49,8 +49,8 @@ vector_picture load_image(const char* filename)
 
 
 /*
- * Converte una vector_picture in un'immagine
- * e la salva e la passa a process_manager.cpp.
+ * Converts a vector_picture to an image
+ * and saves it, passing it to process_manager.cpp.
  */
 bool save_image(const vector_picture& picture,
                 const char* filename)
@@ -81,8 +81,8 @@ bool save_image(const vector_picture& picture,
 
 
 /*
- * Libera la memoria occupata
- * dall'immagine.
+ * Frees the memory allocated
+ * for the image.
  */
 void destroy_image(vector_picture& picture)
 {

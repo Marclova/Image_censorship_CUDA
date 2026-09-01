@@ -12,8 +12,8 @@
 #include <vector>
 
 
-// Gestisce il processo completo di blur:
-// carica immagine -> applica blur -> salva risultato.
+// Manages the complete blur process:
+// loads image -> applies blur -> saves result.
 vector_picture blur_image_process(
         const char* input_image_path,
         const char* output_image_path,

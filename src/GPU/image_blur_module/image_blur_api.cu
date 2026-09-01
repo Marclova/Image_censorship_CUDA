@@ -9,7 +9,7 @@
 
 
 
-
+// This struct is used to store useful information about the provided array of masks
 struct Mask_array_info
 {
     unsigned short max_width;
@@ -99,6 +99,10 @@ static Device_mask_collection device_mask_collection_init_and_alloc(const mask m
 }
 
 
+/// @brief Private function that removes overlapping selections from the provided array of masks, preventing write-write conflicts during the kernel execution.
+/// @param mask_array The array of masks to be fixed, removing overlapping selections.
+/// @param mask_count The amount of masks in the provided array.
+/// @param input_image The input image to be blurred, used to define the size of the selection area.
 static void fix_masks_overlapping(mask mask_array[], unsigned short mask_count, const vector_picture input_image)
 {
     bool **append_selection_area = (bool **)malloc(input_image.width * sizeof(bool *));
@@ -210,7 +214,6 @@ vector_picture blur_image(const vector_picture input_image, mask mask_array[], u
     cudaFree(flattened_mask_data_collection.offsets);
     cudaFree(flattened_mask_data_collection.mask_metadata_array);
     cudaFree(d_filter_coefficients);
-    // free(h_output_image_data);  //TODO: free the output somewhere else, after the image is used, to avoid memory leak
 
     printf("Debug info: CUDA final error state = {%s}\n", cudaGetErrorString(cudaGetLastError()));
     return image_to_return;
